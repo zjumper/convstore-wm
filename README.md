@@ -9,7 +9,7 @@ Online shop sub-system for convestore.com site.
 * Install bower
 
 ```shell
-npm install -g bower
+>npm install -g bower
 ```
 
 * Install Git
@@ -17,18 +17,18 @@ npm install -g bower
 ### Download source code
 
 ```shell
-git clone https://github.com/zjumper/convstore-wm.git
+>git clone https://github.com/zjumper/convstore-wm.git
 ```
 
 ### Build
 
 ```shell
-npm install
-bower install
+>npm install
+>bower install
 ```
 
 ## Run
 
 ```shell
-npm start
+>npm start
 ```

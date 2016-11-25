@@ -4,7 +4,6 @@
   "devDependencies": {
     "angular": "*",
     "angular-bootstrap": "*",
-    "angular-ui-ace": "*",
     "angular-ui-router": "*",
     "bootstrap": "*",
     "es5-shim": "*",
@@ -12,6 +11,18 @@
     "json3": "*"
   },
   "dependencies": {
-    "angular-ui-layout": "1.0.5"
+    "angular-ui-layout": "1.0.5",
+    "bootstrap": "*",
+    "es5-shim": "*",
+    "jquery": "*",
+    "json3": "*"
+  },
+  "overrides": {
+  "bootstrap": {
+    "main": [
+      "dist/js/bootstrap.js",
+      "dist/css/bootstrap.css"
+      ]
+    }
   }
 }
