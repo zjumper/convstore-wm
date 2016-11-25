@@ -1,0 +1,17 @@
+{
+  "name": "convstore-wm",
+  "version": "0.0.1",
+  "devDependencies": {
+    "angular": "*",
+    "angular-bootstrap": "*",
+    "angular-ui-ace": "*",
+    "angular-ui-router": "*",
+    "bootstrap": "*",
+    "es5-shim": "*",
+    "jquery": "*",
+    "json3": "*"
+  },
+  "dependencies": {
+    "angular-ui-layout": "1.0.5"
+  }
+}

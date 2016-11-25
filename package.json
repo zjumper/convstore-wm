@@ -1,0 +1,35 @@
+{
+  "name": "convstore-wm",
+  "version": "0.0.1",
+  "description": "Online shop sub-system for convestore.com site..",
+  "authors": [
+    "Alex Zhang <zpjumper@gmail.com>"
+  ],
+  "dependencies": {
+    "express": "^4.12"
+  },
+  "devDependencies": {
+    "bower": "^1.4.1",
+    "grunt": "^0.4.5",
+    "grunt-bower-install": "^1.6.0",
+    "grunt-cli": "^0.1.13",
+    "grunt-exec": "^0.4.6",
+    "load-grunt-config": "^0.17.1",
+    "supervisor": "^0.6.0",
+    "body-parser": "*"
+  },
+  "engines": {
+    "node": ">=6.6.0"
+  },
+  "scripts": {
+    "test": "webdriver-manager update; grunt build; grunt test",
+    "prebower-install": "npm install",
+    "bower-install": "bower install",
+    "prebuild": "npm run bower-install",
+    "prestart": "npm run build",
+    "predevelop": "npm run build",
+    "start": "grunt serve:dist",
+    "build": "grunt build",
+    "develop": "grunt serve"
+  }
+}
