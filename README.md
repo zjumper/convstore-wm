@@ -1,2 +1,2 @@
 # convstore-wm
-waimai sub system for convestore.com site
+Online shop sub-system for convestore.com site.
