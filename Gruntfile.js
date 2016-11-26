@@ -25,6 +25,7 @@ module.exports = function(grunt) {
   // });
 
   grunt.loadNpmTasks('grunt-wiredep');
+  grunt.loadNpmTasks('grunt-express-server');
 
   grunt.registerTask('serve', function (target) {
     if (target === 'dist') {
@@ -36,6 +37,7 @@ module.exports = function(grunt) {
 
     grunt.task.run([
       'clean:server',
+      'wiredep',
       'express:dev',
       // 'connect:livereload',
       'watch'

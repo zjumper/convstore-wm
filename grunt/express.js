@@ -3,6 +3,8 @@
 module.exports = {
   options: {
     // Override defaults here
+    background: false,
+    port: 8080
   },
   dev: {
     options: {

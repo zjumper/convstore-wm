@@ -32,7 +32,7 @@ module.exports = {
     },
     {
       expand: true,
-      cwd: '.',
+      cwd: 'app',
       src: 'bower_components/**/*',
       dest: 'dist'
     }]

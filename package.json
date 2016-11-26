@@ -35,7 +35,7 @@
     "prebuild": "npm run bower-install",
     "prestart": "npm run build",
     "predevelop": "npm run build",
-    "start": "grunt serve:dist",
+    "start": "grunt serve",
     "build": "grunt build",
     "develop": "grunt serve"
   }

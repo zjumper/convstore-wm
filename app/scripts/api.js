@@ -6,6 +6,7 @@ module.exports = (function () {
   return {
     getProductList: function (req, res) {
       logger.debug('Get product list hit.');
+      res.json({msg:'productList'});
     },
   };
 })();

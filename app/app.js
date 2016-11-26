@@ -19,10 +19,10 @@ log4js.configure({
 
 var app = express();
 
-app.use(express.static(path.join(__dirname, 'app')));
+app.use(express.static('dist'));
 app.use(bodyParser.json());
 var logger = log4js.getLogger('normal');
-logger.setLevel('INFO');
+logger.setLevel('DEBUG');
 app.use(log4js.connectLogger(logger, {level:log4js.levels.DEBUG}));
 
 logger.info('Server initializing ...');
