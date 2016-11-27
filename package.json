@@ -6,6 +6,7 @@
     "Alex Zhang <zpjumper@gmail.com>"
   ],
   "dependencies": {
+    "crypto": "0.0.3",
     "express": "^4.12",
     "log4js": "^1.0.1"
   },

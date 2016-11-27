@@ -26,7 +26,7 @@ logger.setLevel('DEBUG');
 app.use(log4js.connectLogger(logger, {level:log4js.levels.DEBUG}));
 
 logger.info('Server initializing ...');
-
+app.get('/wx', api.wx);
 app.get('/api/getProductList', api.getProductList);
 // app.get('/api/getConfList', api.getConfList);
 // app.get('/api/getConfContent', api.getConfContent);
