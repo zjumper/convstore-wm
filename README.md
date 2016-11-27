@@ -24,6 +24,7 @@ Online shop sub-system for convestore.com site.
 ### Build
 
 ```shell
+>cd convstore-wm
 >npm install
 >bower install
 ```
@@ -31,5 +32,6 @@ Online shop sub-system for convestore.com site.
 ## Run
 
 ```shell
+>mkdir logs
 >npm start
 ```

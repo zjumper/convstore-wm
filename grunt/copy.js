@@ -12,7 +12,7 @@ module.exports = {
         '.htaccess',
         '*.html',
         //'config/defaults.json',
-        'images/{,*/}*.{webp}',
+        'img/**',
         'views/{,*/}*.html',
         'templates/{,*/}*.html',
         'fonts/*',
@@ -20,15 +20,9 @@ module.exports = {
         //'spec-files/*',
         'CNAME',
         'robots.txt',
-        'styles/main.css',
+        'styles/*.css',
         'javascript/*.js'
       ]
-    },
-    {
-      expand: true,
-      cwd: '.tmp/images',
-      dest: 'dist/images',
-      src: ['generated/*']
     },
     {
       expand: true,

@@ -15,13 +15,27 @@
     "bootstrap": "*",
     "es5-shim": "*",
     "jquery": "*",
-    "json3": "*"
+    "json3": "*",
+    "font-awesome": "^4.7.0",
+    "jquery-easing": "*",
+    "scrollreveal": "^3.3.2",
+    "magnific-popup": "^1.1.0"
   },
   "overrides": {
-  "bootstrap": {
-    "main": [
-      "dist/js/bootstrap.js",
-      "dist/css/bootstrap.css"
+    "bootstrap": {
+      "main": [
+        "dist/js/bootstrap.js",
+        "dist/css/bootstrap.css"
+      ]
+    },
+    "font-awesome": {
+      "main": [
+        "css/font-awesome.min.css"
+      ]
+    },
+    "jquery-easing": {
+      "main": [
+        "jquery.easing.min.js"
       ]
     }
   }

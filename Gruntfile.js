@@ -38,6 +38,7 @@ module.exports = function(grunt) {
     grunt.task.run([
       'clean:server',
       'wiredep',
+      'copy:dist',
       'express:dev',
       // 'connect:livereload',
       'watch'
