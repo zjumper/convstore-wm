@@ -2,15 +2,11 @@
   "name": "convstore-wm",
   "version": "0.0.1",
   "devDependencies": {
+  },
+  "dependencies": {
     "angular": "*",
     "angular-bootstrap": "*",
     "angular-ui-router": "*",
-    "bootstrap": "*",
-    "es5-shim": "*",
-    "jquery": "*",
-    "json3": "*"
-  },
-  "dependencies": {
     "angular-ui-layout": "1.0.5",
     "bootstrap": "*",
     "es5-shim": "*",

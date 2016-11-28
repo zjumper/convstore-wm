@@ -39,9 +39,9 @@ module.exports = function(grunt) {
       'clean:server',
       'wiredep',
       'copy:dist',
-      'express:dev',
+      'express:dev'
       // 'connect:livereload',
-      'watch'
+      // 'watch'
     ]);
   });
 
