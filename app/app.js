@@ -19,7 +19,7 @@ log4js.configure({
 
 var app = express();
 
-app.use(express.static('dist'));
+app.use(express.static('app'));
 app.use(bodyParser.json());
 var logger = log4js.getLogger('normal');
 logger.setLevel('DEBUG');

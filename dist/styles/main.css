@@ -1,0 +1,12 @@
+.link, .link:hover, .link:visited {
+  color: #F05F40;
+}
+
+.top-border {
+  border-top: solid 1px #ededed;
+  padding-top: 4px;
+}
+
+.cart {
+  width: 100px;
+}

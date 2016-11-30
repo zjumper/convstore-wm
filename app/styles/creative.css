@@ -38,9 +38,9 @@ h6 {
   font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
 }
 p {
-  font-size: 16px;
+  font-size: 12px;
   line-height: 1.5;
-  margin-bottom: 20px;
+  /*margin-bottom: 20px;*/
 }
 .bg-primary {
   background-color: #F05F40;
@@ -287,8 +287,9 @@ header .header-content .header-content-inner p {
   padding-right: 0;
   padding-left: 0;
 }
+
 .btn-default {
-  color: #222222;
+  /*color: #222222;*/
   background-color: white;
   border-color: white;
   -webkit-transition: all 0.35s;
@@ -301,10 +302,11 @@ header .header-content .header-content-inner p {
 .btn-default:active,
 .btn-default.active,
 .open > .dropdown-toggle.btn-default {
-  color: #222222;
+  /*color: #222222;*/
   background-color: #f2f2f2;
   border-color: #ededed;
 }
+
 .btn-default:active,
 .btn-default.active,
 .open > .dropdown-toggle.btn-default {
@@ -332,11 +334,11 @@ fieldset[disabled] .btn-default.active {
   border-color: white;
 }
 .btn-default .badge {
-  color: white;
+  /*color: white;*/
   background-color: #222222;
 }
 .btn-primary {
-  color: white;
+  /*color: white;*/
   background-color: #F05F40;
   border-color: #F05F40;
   -webkit-transition: all 0.35s;
@@ -349,7 +351,7 @@ fieldset[disabled] .btn-default.active {
 .btn-primary:active,
 .btn-primary.active,
 .open > .dropdown-toggle.btn-primary {
-  color: white;
+  /*color: white;*/
   background-color: #ee4b28;
   border-color: #ed431f;
 }
@@ -386,7 +388,7 @@ fieldset[disabled] .btn-primary.active {
 .btn {
   font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
   border: none;
-  border-radius: 300px;
+  /*border-radius: 300px;*/
   font-weight: 700;
   text-transform: uppercase;
 }
@@ -415,6 +417,6 @@ body {
   webkit-tap-highlight-color: #222222;
 }
 footer {
-  height: 30px;
-  background: #aaaaaa;
+  height: 40px;
+  background: #FFFFFF;
 }
