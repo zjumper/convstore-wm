@@ -66,7 +66,7 @@ module.exports = (function () {
         if(reply === undefined || reply === null) {
           logger.info('ACCESS_TOKEN expired, refresh it.');
           initAccessToken();
-        } else {
+        } else if(cb) {
           cb(reply.toString());
         }
       });
