@@ -39,7 +39,7 @@ module.exports = (function () {
           res.on('data', (d) => {
             var retd = json.parse(d);
             logger.info(retd);
-            if(d.access_token) {
+            if(retd.access_token) {
               // request user info
               var opt = {
                 hostname: 'api.weixin.qq.com',
