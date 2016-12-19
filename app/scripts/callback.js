@@ -43,7 +43,7 @@ module.exports = (function () {
               // request user info
               var opt = {
                 hostname: 'api.weixin.qq.com',
-                path: '/sns/userinfo?access_token=' + d. access_token + '&openid=' + d.openid + '&lang=zh_CN',
+                path: '/sns/userinfo?access_token=' + retd.access_token + '&openid=' + retd.openid + '&lang=zh_CN',
                 method: 'GET'
               };
               var req2 = https.request(opt, (res) => {
