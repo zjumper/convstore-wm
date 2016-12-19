@@ -1,8 +1,7 @@
 {
   "name": "convstore-wm",
   "version": "0.0.1",
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "dependencies": {
     "angular": "*",
     "angular-bootstrap": "*",

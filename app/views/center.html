@@ -6,8 +6,8 @@
             <img ng-src="img/{{p.pic}}">
         </div>
         <div class="product-info">
-            <p class="link">{{p.label}}</p>
-            <p class="price">￥{{p.price}}/{{p.unit}}</p>
+            <p class="">{{p.name}}</p>
+            <p class="price">{{p.price | currency: '￥'}}</p>
         </div>
         <div class="plus">
             <i class="fa fa-plus"></i>

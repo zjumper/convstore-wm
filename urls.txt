@@ -1,0 +1,1 @@
+https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxfb8982fe794a85a7&secret=1f05f82c9aa8192dd09b345a9ec5e2cc&redirect_uri=http%3A%2F%2Fm.convstore.com%2Fcallback%2Fauth&response_type=code&scope=snsapi_userinfo&state=0#wechat_redirect

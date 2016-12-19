@@ -9,7 +9,7 @@ body {
   width: 100%;
 }
 body {
-  font-family: 'Merriweather', 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Helvetica Neue', 'PingFang SC', 'Microsoft Yahei', 微软雅黑, STXihei, 华文细黑, sans-serif;
 }
 hr {
   border-color: #F05F40;
@@ -40,6 +40,7 @@ h6 {
 p {
   font-size: 12px;
   line-height: 1.5;
+  color: #565656;
   /*margin-bottom: 20px;*/
 }
 .bg-primary {
@@ -418,5 +419,5 @@ body {
 }
 footer {
   height: 40px;
-  background: #FFFFFF;
+  background: rgba(34, 34, 34, 0.7);
 }

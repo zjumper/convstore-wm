@@ -17,7 +17,7 @@ body {
 
 #nav {
   border-bottom: solid 1px #ededed;
-  padding: 0 4px 4px 4px;
+  padding: 4px 4px 4px 4px;
   background: #ffffff;
 }
 
@@ -35,12 +35,17 @@ body {
   /*margin: 4px 2px;*/
   margin: 2px -15px 2px -10px;
 }
+
 .product-img {
   float: left;
 }
 
 .product-info {
   padding-left: 60px;
+}
+
+.price {
+  color: #F05F40;
 }
 
 .plus {
@@ -54,10 +59,12 @@ body {
   border-radius: 4px;
   margin: -1px;
   text-align: center;
+  background-color: rgba(34, 34, 34, 0.05);
+  cursor: pointer;
 }
 
 .panel-default {
-  /*padding: 4px 2px;*/
+  padding: 4px 4px;
   border-color: #ededed;
   margin-botton: 10px;
 }

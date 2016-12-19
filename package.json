@@ -6,12 +6,16 @@
     "Alex Zhang <zpjumper@gmail.com>"
   ],
   "dependencies": {
+    "angoose": "^0.3.21",
+    "body-parser": "*",
     "crypto": "0.0.3",
     "express": "^4.12",
-    "log4js": "^1.0.1"
+    "https": "^1.0.0",
+    "json3": "^3.3.2",
+    "log4js": "^1.0.1",
+    "redis": "^2.6.3"
   },
   "devDependencies": {
-    "body-parser": "*",
     "bower": "^1.4.1",
     "grunt": "^0.4.5",
     "grunt-bower-install": "^1.6.0",
