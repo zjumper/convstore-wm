@@ -32,25 +32,29 @@ module.exports = (function () {
           path: '/sns/oauth2/access_token?appid=wxfb8982fe794a85a7&secret=1f05f82c9aa8192dd09b345a9ec5e2cc&secret=1f05f82c9aa8192dd09b345a9ec5e2cc&code=' + code + '&grant_type=authorization_code',
           method: 'GET'
         };
-        https.request(options, (res) => {
+        var req = https.request(options, (res) => {
           res.on('data', (d) => {
             if(d.access_token) {
               // request user info
-              var opt ={
+              var opt = {
                 hostname: 'api.weixin.qq.com',
                 path: '/sns/userinfo?access_token=' + d. access_token + '&openid=' + d.openid + '&lang=zh_CN',
                 method: 'GET'
               };
-              https.request(opt, (res) => {
+              var req2 = https.request(opt, (res) => {
                 res.on('data', (user) => {
                   if(user.openid) {
                     res.redirect('/index.html?openid=' + user.openid + '&pic=' + user.headimgurl);
                   }
                 });
               });
+              req2.end();
+              req2.on('error', logger.error);
             }
           });
         });
+        req.end();
+        req.on('error', logger.error);
       }
     }
   };
