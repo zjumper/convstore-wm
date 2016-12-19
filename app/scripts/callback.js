@@ -1,4 +1,5 @@
 var config = require('./config'),
+  json = require('json3'),
   crypto = require('crypto'),
   https = require('https'),
   log4js = require('log4js');
@@ -24,6 +25,8 @@ module.exports = (function () {
     auth: function(req, res) {
       var code = req.query.code;
       var state = req.query.state;
+      logger.info(code);
+      logger.info(state);
 
       if(code) {
         // request access_token
@@ -34,6 +37,8 @@ module.exports = (function () {
         };
         var req = https.request(options, (res) => {
           res.on('data', (d) => {
+            var retd = json.parse(d);
+            logger.info(retd);
             if(d.access_token) {
               // request user info
               var opt = {
@@ -42,7 +47,9 @@ module.exports = (function () {
                 method: 'GET'
               };
               var req2 = https.request(opt, (res) => {
-                res.on('data', (user) => {
+                res.on('data', (u) => {
+                  var user = json.parse(u)
+                  logger.info(user);
                   if(user.openid) {
                     res.redirect('/index.html?openid=' + user.openid + '&pic=' + user.headimgurl);
                   }

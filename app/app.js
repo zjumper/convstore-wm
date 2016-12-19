@@ -9,7 +9,9 @@ var express = require('express'),
 
 log4js.configure({
   appenders: [
-    { type: 'console' }, //控制台输出
+    { type: 'console', //控制台输出
+      category: 'normal'
+    },
     {
       type: 'file', //文件输出
       filename: 'logs/log.log',
