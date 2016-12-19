@@ -22,7 +22,7 @@ module.exports = (function () {
         res.status(200).send(echo);
       else res.status(200).send('error');
     },
-    auth: function(req, res) {
+    auth: function(req, response) {
       var code = req.query.code;
       var state = req.query.state;
       logger.info(code);
@@ -51,7 +51,7 @@ module.exports = (function () {
                   var user = json.parse(u)
                   logger.info(user);
                   if(user.openid) {
-                    res.redirect('/index.html?openid=' + user.openid + '&pic=' + user.headimgurl);
+                    response.redirect('/index.html?openid=' + user.openid + '&pic=' + user.headimgurl);
                   }
                 });
               });
