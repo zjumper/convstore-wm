@@ -22,9 +22,9 @@ module.exports = (function () {
         res.status(200).send(echo);
       else res.status(200).send('error');
     },
-    auth: function(req, response) {
-      var code = req.query.code;
-      var state = req.query.state;
+    auth: function(request, response) {
+      var code = request.query.code;
+      var state = request.query.state;
       logger.info(code);
       logger.info(state);
 
@@ -48,12 +48,15 @@ module.exports = (function () {
               };
               var req2 = https.request(opt, (res) => {
                 res.on('data', (u) => {
-                  var user = json.parse(u)
+                  var user = json.parse(u);
                   logger.info(user);
+                  // save user info into session
+                  request.session.user = user;
                   if(user.openid) {
-                    response.redirect('/index.html?openid=' + encodeURIComponent(user.openid)
-                    + '&nickname=' + encodeURIComponent(user.nickname)
-                    + '&pic=' + encodeURIComponent(user.headimgurl));
+                    // response.redirect('/index.html?openid=' + encodeURIComponent(user.openid)
+                    // + '&nickname=' + encodeURIComponent(user.nickname)
+                    // + '&pic=' + encodeURIComponent(user.headimgurl));
+                    response.redirect('/index.html');
                   }
                 });
               });

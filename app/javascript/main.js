@@ -116,16 +116,33 @@ wmApp.controller('centerCtl', ['$scope', '$http', 'cartService', 'Product', func
 /**
  * Nav pane controller
  */
-wmApp.controller('footerCtl', ['$scope', '$location', 'cartService', function($scope, $location, cartService) {
-  var img = $location.search().pic;
-  if(img) {
-    img = img.substring(0, img.length - 1) + '46';
-    $scope.headimgurl = img;
-  } else $scope.headimgurl = "/img/user-icon.png";
-  $scope.openid = $location.search().openid;
-  if($location.search().nickname)
-    $scope.nickname = $location.search().nickname;
-  else $scope.nickname = "匿名";
+wmApp.controller('footerCtl', ['$scope', '$http', 'cartService', function($scope, $http, cartService) {
+
+  // var img = $location.search().pic;
+  // if(img) {
+  //   img = img.substring(0, img.length - 1) + '46';
+  //   $scope.headimgurl = img;
+  // } else $scope.headimgurl = "/img/user-icon.png";
+  // $scope.openid = $location.search().openid;
+  // if($location.search().nickname)
+  //   $scope.nickname = $location.search().nickname;
+  // else $scope.nickname = "匿名";
+
+  // get user info from server
+  $http.get('/api/getUserInfo').success(function(data) {
+    // console.log(data);
+    // var user = JSON.parse(data);
+    var user = data;
+    var img = user.headimgurl;
+    if(img) {
+      img = img.substring(0, img.length - 1) + '46';
+      $scope.headimgurl = img;
+    } else $scope.headimgurl = "/img/user-icon.png";
+    $scope.openid = user.openid;
+    if(user.nickname)
+      $scope.nickname = user.nickname;
+    else $scope.nickname = "匿名";
+  });
 
   $scope.cart = cartService.cart;
   $scope.$on('cart.added', function(event){
@@ -152,7 +169,7 @@ wmApp.controller('footerCtl', ['$scope', '$location', 'cartService', function($s
 /**
  * Cart service
  */
-wmApp.service('cartService', ['$rootScope', function($rootScope) {
+wmApp.service('cartService', ['$rootScope', '$http', function($rootScope, $http) {
   var service = {
     cart: {
       'products': {},
@@ -173,6 +190,12 @@ wmApp.service('cartService', ['$rootScope', function($rootScope) {
       service.cart.total.num += 1;
       service.cart.total.amount += price;
       $rootScope.$broadcast('cart.added');
+    },
+    getUserInfo: function(cb) {
+      $http.get('/api/getUserInfo').success(function(data) {
+        var user = JSON.parse(data);
+        cb(user);
+      });
     }
   };
   return service;

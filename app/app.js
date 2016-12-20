@@ -1,4 +1,5 @@
 var express = require('express'),
+  session = require('express-session'),
   path = require('path'),
   bodyParser = require('body-parser'),
   log4js = require('log4js'),
@@ -25,6 +26,7 @@ log4js.configure({
 var app = express();
 
 app.use(express.static('app'));
+app.use(session({secret: '20161220'}));
 app.use(bodyParser.json());
 // app.use(express.cookieParser());
 // app.use(express.session({secret: '1234567890QWERTY'}));
@@ -35,6 +37,7 @@ app.use(log4js.connectLogger(logger, {level:log4js.levels.DEBUG}));
 logger.info('Server initializing ...');
 app.get('/wx', cb.wx);
 app.get('/api/getProductList', api.getProductList);
+app.get('/api/getUserInfo', api.getUserInfo);
 app.get('/callback/auth', cb.auth);
 // app.get('/api/getConfList', api.getConfList);
 // app.get('/api/getConfContent', api.getConfContent);

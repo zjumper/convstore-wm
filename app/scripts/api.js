@@ -70,6 +70,13 @@ module.exports = (function () {
           cb(reply.toString());
         }
       });
+    },
+    getUserInfo: function(req, res) {
+      var json = {};
+      // load user info from session
+      if(req.session.user)
+        json = req.session.user;
+      res.status(200).json(json);
     }
   };
 })();
