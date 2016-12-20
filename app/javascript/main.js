@@ -118,9 +118,10 @@ wmApp.controller('centerCtl', ['$scope', '$http', 'cartService', 'Product', func
  */
 wmApp.controller('footerCtl', ['$scope', '$location', 'cartService', function($scope, $location, cartService) {
   var img = $location.search().pic;
-  if(img)
-    $scope.headimgurl = $location.search().pic;
-  else $scope.headimgurl = "/img/box.png";
+  if(img) {
+    img = img.substring(0, img.length - 1) + '46';
+    $scope.headimgurl = img;
+  } else $scope.headimgurl = "/img/user-icon.png";
   $scope.openid = $location.search().openid;
   if($location.search().nickname)
     $scope.nickname = $location.search().nickname;
