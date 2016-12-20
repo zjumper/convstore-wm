@@ -27,8 +27,25 @@ body {
   margin-left: -5px;
 }
 
+.indent30 {
+  padding-left: 30px;
+}
+
+.headimg {
+  border-radius: 32px;
+  width: 32px;
+  height: 32px;
+  overflow: hidden;
+  float: left;
+}
+
+.icon32 {
+  width: 32px;
+  height: 32px;
+}
+
 .cart {
-  width: 100px;
+  width: 160px;
 }
 
 .product {

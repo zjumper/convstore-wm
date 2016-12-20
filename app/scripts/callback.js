@@ -51,7 +51,7 @@ module.exports = (function () {
                   var user = json.parse(u)
                   logger.info(user);
                   if(user.openid) {
-                    response.redirect('/index.html?openid=' + user.openid + '&pic=' + user.headimgurl);
+                    response.redirect('/index.html?openid=' + user.openid + '&nickname=' + user.nickname + '&pic=' + user.headimgurl);
                   }
                 });
               });

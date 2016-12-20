@@ -57,7 +57,7 @@ wmApp.controller('navCtl', function($scope){
 /**
  * Main pane controller
  */
-wmApp.controller('centerCtl', ['$scope', '$http', 'SampleUser', 'Product', function($scope, $http, SampleUser, Product) {
+wmApp.controller('centerCtl', ['$scope', '$http', 'cartService', 'Product', function($scope, $http, cartService, Product) {
   // $scope.products = [{id:0, label:'热餐', pic:'box.png', price:1.00, link:'#home'},
   //   {id:1, label:'煮雨颜文字君玛格丽特手印饼（蛋黄&抹', pic:'box.png', price:1.00, unit:'个', link:'#about'},
   //   {id:2, label:'日用', pic:'box.png', price:1.00, unit:'个', link:'#daily'},
@@ -107,14 +107,32 @@ wmApp.controller('centerCtl', ['$scope', '$http', 'SampleUser', 'Product', funct
     //   });
     // }
 
+    $scope.addToCart = function(id, price) {
+      // console.log(id);
+      cartService.add(id, price);
+    };
 }]);
 
 /**
  * Nav pane controller
  */
-wmApp.controller('footerCtl', function($scope){
+wmApp.controller('footerCtl', ['$scope', '$location', 'cartService', function($scope, $location, cartService) {
+  var img = $location.search().pic;
+  if(img)
+    $scope.headimgurl = $location.search().pic;
+  else $scope.headimgurl = "/img/box.png";
+  $scope.openid = $location.search().openid;
+  if($location.search().nickname)
+    $scope.nickname = $location.search().nickname;
+  else $scope.nickname = "匿名";
 
-});
+  $scope.cart = cartService.cart;
+  $scope.$on('cart.added', function(event){
+    $scope.cart = cartService.cart;
+    console.log($scope.cart);
+  });
+
+}]);
 //
 // wmApp.directive('format-currency', ['$timeout', function($timeout) {
 //   return {
@@ -129,3 +147,32 @@ wmApp.controller('footerCtl', function($scope){
 //     }
 //   };
 // }]);
+
+/**
+ * Cart service
+ */
+wmApp.service('cartService', ['$rootScope', function($rootScope) {
+  var service = {
+    cart: {
+      'products': {},
+      'total': {
+        'num': 0,
+        'amount': 0
+      }
+    },
+    add: function(id, price) {
+      // console.log(id);
+      if(service.cart.products[id]) {
+        service.cart.products[id].num += 1;
+      } else {
+        service.cart.products[id] = {};
+        service.cart.products[id].num = 1;
+        service.cart.products[id].price = price;
+      }
+      service.cart.total.num += 1;
+      service.cart.total.amount += price;
+      $rootScope.$broadcast('cart.added');
+    }
+  };
+  return service;
+}]);

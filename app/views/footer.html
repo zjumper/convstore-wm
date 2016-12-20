@@ -1,3 +1,15 @@
 <div class="text-center top-border">
-  <a type=button class="btn btn-primary cart"><i class="fa fa-shopping-cart"></i> 购物车 <span class="badge">3</span></a>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xs-6 indent30">
+        <div class="headimg"><img class="icon32" ng-src="{{headimgurl}}"></div>
+        <!--
+        <div>{{nickname}}</div>
+      -->
+      </div>
+      <div class="col-xs-6">
+        <a type=button class="btn btn-primary cart"><i class="fa fa-shopping-cart"></i> 购物车 <span class="badge">{{cart.total.amount | currency: '￥'}}</span></a>
+      </div>
+    </div>
+  </div>
 </div>
