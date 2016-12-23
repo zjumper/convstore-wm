@@ -46,18 +46,28 @@ wmApp.config(function($stateProvider, $urlRouterProvider) {
 /**
  * Nav pane controller
  */
-wmApp.controller('navCtl', function($scope){
+wmApp.controller('navCtl', ['$rootScope', '$scope', 'productService', function($rootScope, $scope, productService) {
+  $scope.filter = '';
   $scope.categories = [{id:0, label:'热餐', link:'#home'},
     {id:1, label:'餐饮', link:'#about'},
     {id:2, label:'食品', link:'#daily'},
-    {id:2, label:'百货', link:'#daily'},
-    {id:3, label:'其他', link:'#other'}];
-});
+    {id:3, label:'百货', link:'#daily'},
+    {id:4, label:'其他', link:'#other'}];
+  $scope.category = $scope.categories[0].label;
+
+  $scope.changeCategory = function(cate) {
+    productService.loadProduct(cate);
+    $scope.category = $scope.categories[cate].label;
+  };
+  $scope.filterProducts = function() {
+    $rootScope.$broadcast('filter.products', $scope.filter);
+  };
+}]);
 
 /**
  * Main pane controller
  */
-wmApp.controller('centerCtl', ['$scope', '$http', 'cartService', 'Product', function($scope, $http, cartService, Product) {
+wmApp.controller('centerCtl', ['$scope', '$http', 'cartService', 'productService', function($scope, $http, cartService, productService) {
   // $scope.products = [{id:0, label:'热餐', pic:'box.png', price:1.00, link:'#home'},
   //   {id:1, label:'煮雨颜文字君玛格丽特手印饼（蛋黄&抹', pic:'box.png', price:1.00, unit:'个', link:'#about'},
   //   {id:2, label:'日用', pic:'box.png', price:1.00, unit:'个', link:'#daily'},
@@ -81,36 +91,42 @@ wmApp.controller('centerCtl', ['$scope', '$http', 'cartService', 'Product', func
   //   {id:2, label:'日用', pic:'box.png', price:1.00, unit:'个', link:'#daily'},
   //   {id:3, label:'其他', pic:'box.png', price:1.00, unit:'个', link:'#other'}];
 
-  $scope.products = Product.$query({});
+  // $scope.products = Product.$query({});
+  $scope.products = productService.loadProduct(0);
 
     // $scope.$broadcast('dataloaded');
-    // for(var i = 2; i < 22; i ++) {
-    //   var p = new Product({
-    //     id: i,
-    //     name: '产品名称' + i,
-    //     price: 1.5 * i,
-    //     unit: '个',
-    //     stock: 20 + i,
-    //     pcode: '1234567890123' + i,
-    //     qcode: '12345678' + i,
-    //     pic: 'box.png',
-    //     desc: '测试产品' + i
-    //   });
-    //   // var pp = Product.$get({'id':'1'});
-    //   // console.log(pp);
-    //   // console.log(pp.name);
-    //   // console.log(pp.id);
-    //   p.save(function(err, result){
-    //     console.log(p._id);
-    //   }, function(err){
-    //     console.log(err);
-    //   });
-    // }
+    // productService.initData();
 
     $scope.addToCart = function(id, price) {
-      // console.log(id);
+      // console.log(event);
+      var fly = $('.fly');
+      fly.css({display:'block',
+               left: event.pageX,
+               top: event.pageY});
+      var top = $('#footer').offset().top + 10;
+      var left = $(window).width() - 120;
+      fly.animate({
+        top: top + 'px', // bottom-right
+        left: left + 'px'
+      }, 700, 'easeInOutExpo',
+      ()=>{fly.css({display:'none'});});
+
       cartService.add(id, price);
     };
+
+    $scope.$on('category.change', function(event) {
+      $scope.products = productService.currentProducts;
+    });
+
+    $scope.$on('filter.products', function(event, filter) {
+      if(filter && filter != '') {
+        $scope.products = _.filter(productService.currentProducts, function(p) {
+          return p.name.indexOf(filter) > -1;
+        });
+      } else {
+        $scope.products = productService.currentProducts;
+      }
+    });
 }]);
 
 /**
@@ -147,7 +163,7 @@ wmApp.controller('footerCtl', ['$scope', '$http', 'cartService', function($scope
   $scope.cart = cartService.cart;
   $scope.$on('cart.added', function(event){
     $scope.cart = cartService.cart;
-    console.log($scope.cart);
+    // console.log($scope.cart);
   });
 
 }]);
@@ -165,6 +181,53 @@ wmApp.controller('footerCtl', ['$scope', '$http', 'cartService', function($scope
 //     }
 //   };
 // }]);
+
+/**
+ * Product service
+ */
+wmApp.service('productService', ['$rootScope', 'Product', function($rootScope, Product) {
+  var svc = {
+    currentProducts: [],
+    loadProduct: function(cat) {
+      var ret = {};
+      if(cat) {
+        ret = Product.$query({'category': cat});
+      } else {
+        ret = Product.$query({});
+      }
+      svc.currentProducts = ret;
+      $rootScope.$broadcast('category.change');
+      return ret;
+    },
+    initData: function() {
+      var cates = ['热餐','餐饮','食品','百货','其他'];
+      for(var i = 0; i < 50; i ++) {
+        var p = new Product({
+          id: i,
+          name: '产品名称' + i,
+          category: Math.floor(Math.random() * 5),
+          price: 1.5 * i,
+          unit: '个',
+          stock: 20 + i,
+          pcode: '1234567890123' + i,
+          qcode: '12345678' + i,
+          pic: 'box.png',
+          desc: '测试产品' + i
+        });
+        // var pp = Product.$get({'id':'1'});
+        // console.log(pp);
+        // console.log(pp.name);
+        // console.log(pp.id);
+        p.save(function(err, result){
+          console.log(p._id);
+        }, function(err){
+          console.log(err);
+        });
+      }
+    }
+  };
+  return svc;
+}]);
 
 /**
  * Cart service

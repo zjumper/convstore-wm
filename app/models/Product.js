@@ -3,6 +3,7 @@ var mongoose = angoose.getMongoose();
 var productSchema = new mongoose.Schema({
   id: {type: String, required: true},
   name: { type: String, required: true, tags:['default-list'], label:'Name'},
+  category: {type: Number, required: true, label:'分类'},
   price: { type: Number, required: true, tags:['default-list'], label:'Price'},
   unit: { type: String, required: true, label:'Unit'},
   stock: { type: Number, required: true, tags:['default-list'], label:'Stock'},

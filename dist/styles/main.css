@@ -27,8 +27,25 @@ body {
   margin-left: -5px;
 }
 
+.indent30 {
+  padding-left: 30px;
+}
+
+.headimg {
+  border-radius: 32px;
+  width: 32px;
+  height: 32px;
+  overflow: hidden;
+  float: left;
+}
+
+.icon32 {
+  width: 32px;
+  height: 32px;
+}
+
 .cart {
-  width: 100px;
+  width: 160px;
 }
 
 .product {
@@ -67,4 +84,15 @@ body {
   padding: 4px 4px;
   border-color: #ededed;
   margin-botton: 10px;
+}
+
+.fly {
+  display: none;
+  position: absolute;
+  z-index: 9999;
+  opacity: 0.7;
+  /*font-family: 'Microsoft Yahei', 微软雅黑;*/
+  font-size: 18px;
+  font-weight: bold;
+  color: #F05F40;
 }

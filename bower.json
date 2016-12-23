@@ -13,6 +13,7 @@
     "json3": "*",
     "font-awesome": "^4.7.0",
     "jquery-easing": "*",
+    "underscore": "*",
     "scrollreveal": "^3.3.2",
     "magnific-popup": "^1.1.0"
   },

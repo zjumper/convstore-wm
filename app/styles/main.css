@@ -85,3 +85,14 @@ body {
   border-color: #ededed;
   margin-botton: 10px;
 }
+
+.fly {
+  display: none;
+  position: absolute;
+  z-index: 9999;
+  opacity: 0.7;
+  /*font-family: 'Microsoft Yahei', 微软雅黑;*/
+  font-size: 18px;
+  font-weight: bold;
+  color: #F05F40;
+}
