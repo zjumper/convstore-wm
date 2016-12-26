@@ -96,3 +96,27 @@ body {
   font-weight: bold;
   color: #F05F40;
 }
+
+.cart-list {
+  /*display: none;*/
+  position: absolute;
+  z-index: 9999;
+  top: -200px;
+  left: 150px;
+  width: 200px;
+}
+
+.cart-list ul {
+
+}
+
+.sum {
+  font-size: 18px;
+  color: #F05F40;
+  text-align: right;
+  padding: 5px 5px;
+}
+
+#cart-modal .badge {
+  background-color: #F05F40;
+}

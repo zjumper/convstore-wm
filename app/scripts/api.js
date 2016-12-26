@@ -3,6 +3,8 @@ var config = require('./config'),
   crypto = require('crypto'),
   https = require('https'),
   redis = require('redis'),
+  _ = require('underscore'),
+  angoose = require('angoose'),
   client = redis.createClient(),
   log4js = require('log4js');
 
@@ -77,6 +79,38 @@ module.exports = (function () {
       if(req.session.user)
         json = req.session.user;
       res.status(200).json(json);
+    },
+    submitOrder: function(req, res) {
+      // var u = req.session.user
+      var u = {
+        openid: 'jlaijewojla92834lksjfl',
+        nickname: 'zjumper',
+        sex: '1',
+        province: 'Beijing',
+        city: 'Beijing',
+        country: 'China',
+        headimgurl: '/img/user-icon.png',
+        privilege: [],
+        unionid: '',
+        contact: []
+      };
+      var order = req.body;
+      logger.info(order);
+      if(_.indexOf(u.contact, order.contact) < 0)
+        u.contact.push(order.contact);
+      // save user information
+      var User = angoose.getClass('User');
+      try {
+        var user = new User(u);
+        logger.info(user);
+        user.save();
+      } catch (e) {
+        logger.error(e);
+        res.status(500).json({status : 500});
+      }
+      // save order
+
+      res.status(200).json({status : 200});
     }
   };
 })();

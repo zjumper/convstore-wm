@@ -97,7 +97,7 @@ wmApp.controller('centerCtl', ['$scope', '$http', 'cartService', 'productService
     // $scope.$broadcast('dataloaded');
     // productService.initData();
 
-    $scope.addToCart = function(id, price) {
+    $scope.addToCart = function(id, name, price) {
       // console.log(event);
       var fly = $('.fly');
       fly.css({display:'block',
@@ -111,7 +111,7 @@ wmApp.controller('centerCtl', ['$scope', '$http', 'cartService', 'productService
       }, 700, 'easeInOutExpo',
       ()=>{fly.css({display:'none'});});
 
-      cartService.add(id, price);
+      cartService.add(id, name, price);
     };
 
     $scope.$on('category.change', function(event) {
@@ -133,17 +133,6 @@ wmApp.controller('centerCtl', ['$scope', '$http', 'cartService', 'productService
  * Nav pane controller
  */
 wmApp.controller('footerCtl', ['$scope', '$http', 'cartService', function($scope, $http, cartService) {
-
-  // var img = $location.search().pic;
-  // if(img) {
-  //   img = img.substring(0, img.length - 1) + '46';
-  //   $scope.headimgurl = img;
-  // } else $scope.headimgurl = "/img/user-icon.png";
-  // $scope.openid = $location.search().openid;
-  // if($location.search().nickname)
-  //   $scope.nickname = $location.search().nickname;
-  // else $scope.nickname = "匿名";
-
   // get user info from server
   $http.get('/api/getUserInfo').success(function(data) {
     // console.log(data);
@@ -160,27 +149,65 @@ wmApp.controller('footerCtl', ['$scope', '$http', 'cartService', function($scope
     else $scope.nickname = "匿名";
   });
 
+  //
   $scope.cart = cartService.cart;
-  $scope.$on('cart.added', function(event){
+  $scope.$on('cart.change', function(event){
     $scope.cart = cartService.cart;
     // console.log($scope.cart);
   });
+  $scope.$on('cart.submit', function(event, data) {
+    if(data === 'success') {
+      $scope.tips('success', '您的订单已经确认，我们将尽快为您派送！');
+    } else {
+      $scope.tips('fail', '抱歉，您的订单提交发生错误，请稍后再试或电话与我们联系，85856735。');
+    }
+  });
 
+  $scope.tips = function(status, msg) {
+    if(status === 'success') {
+      $('#tips').text(msg).css({
+        'display': 'block',
+        'text-align': 'center'
+      }).addClass('alert alert-success');
+    } else if(status === 'fail') {
+      $('#tips').text(msg).css({
+        'display': 'block',
+        'text-align': 'center'
+      }).addClass('alert alert-danger');
+    }
+  };
+  $scope.hideTips = function() {
+    $('#tips').text('').removeClass().hide();
+  }
+
+  $scope.toggleCart = function() {
+    //var modal = $('#cart-modal').toggle();
+    $scope.hideTips();
+  };
+
+  $scope.emptyCart = function() {
+    // console.log('cart empty');
+    cartService.empty();
+  };
+
+  $scope.submitCart = function() {
+    // console.log('cart submit');
+    $scope.hideTips();
+    if($scope.cart.total.amount < 58) {
+      $scope.tips('fail', '全时外送58元起送。');
+    } else {
+      var contact = {};
+      contact.mobile = $('#mobile').val();
+      contact.address = $('#address').val();
+      if(contact.mobile == undefined || contact.mobile == ''
+        || contact.address == undefined || contact.address == '') {
+        $scope.tips('fail', '请填写正确的移动联系电话和外送地址信息！');
+        return;
+      }
+      cartService.submit(contact);
+    }
+  };
 }]);
-//
-// wmApp.directive('format-currency', ['$timeout', function($timeout) {
-//   return {
-//     link: function($scope, element, attrs) {
-//       $scope.$on('dataloaded', function() {
-//         $timeout(function () {
-//           //jquery code and plugins
-//           console.log('......');
-//           $('.price').formatCurrency({symbol: '￥'});
-//         }, 0, false);
-//       });
-//     }
-//   };
-// }]);
 
 /**
  * Product service
@@ -233,6 +260,13 @@ wmApp.service('productService', ['$rootScope', 'Product', function($rootScope, P
  * Cart service
  */
 wmApp.service('cartService', ['$rootScope', '$http', function($rootScope, $http) {
+  var emptyCart = {
+    'products': {},
+    'total': {
+      'num': 0,
+      'amount': 0
+    }
+  };
   var service = {
     cart: {
       'products': {},
@@ -241,18 +275,35 @@ wmApp.service('cartService', ['$rootScope', '$http', function($rootScope, $http)
         'amount': 0
       }
     },
-    add: function(id, price) {
+    add: function(id, name, price) {
       // console.log(id);
       if(service.cart.products[id]) {
         service.cart.products[id].num += 1;
       } else {
         service.cart.products[id] = {};
+        service.cart.products[id].name = name;
         service.cart.products[id].num = 1;
         service.cart.products[id].price = price;
       }
       service.cart.total.num += 1;
       service.cart.total.amount += price;
-      $rootScope.$broadcast('cart.added');
+      $rootScope.$broadcast('cart.change');
+    },
+    empty: function() {
+      service.cart = emptyCart;
+      $rootScope.$broadcast('cart.change');
+    },
+    submit: function(contact) {
+      var order = service.cart;
+      order.contact = contact;
+      $http.post('/api/submitOrder', order).success(function(d) {
+        // var msg = JSON.parse(d);
+        if(d.status == 200) {
+          $rootScope.$broadcast('cart.submit', 'success');
+        } else {
+          $rootScope.$broadcast('cart.submit', 'fail');
+        }
+      });
     },
     getUserInfo: function(cb) {
       $http.get('/api/getUserInfo').success(function(data) {

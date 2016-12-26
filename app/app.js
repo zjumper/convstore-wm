@@ -38,6 +38,7 @@ logger.info('Server initializing ...');
 app.get('/wx', cb.wx);
 app.get('/api/getProductList', api.getProductList);
 app.get('/api/getUserInfo', api.getUserInfo);
+app.post('/api/submitOrder', api.submitOrder);
 app.get('/callback/auth', cb.auth);
 // app.get('/api/getConfList', api.getConfList);
 // app.get('/api/getConfContent', api.getConfContent);

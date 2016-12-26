@@ -8,7 +8,8 @@ var userSchema = new mongoose.Schema({
   city: { type: String, required: true, tags:['default-list'], label:'City'},
   country: { type: String, required: true, label:'Country'},
   headimgurl: { type: String, required: true, label:'Head Image'},
-  privilege: {type: [String], required: true, label: 'Privilege'},
-  unionid: { type:String}
+  privilege: {type: [String], required: false, label: 'Privilege'},
+  unionid: { type:String},
+  contact: [{ mobile: String, address: String}]
 });
 module.exports = mongoose.model('User', userSchema);

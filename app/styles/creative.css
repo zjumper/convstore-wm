@@ -421,3 +421,26 @@ footer {
   height: 40px;
   background: rgb(234, 234, 234);
 }
+
+.panel-primary {
+  border-color: #F05F40;
+}
+
+.modal-header {
+  border-color: #F05F40;
+  background-color: #F05F40;
+  font-size: 14px;
+  color: white;
+}
+
+.modal-backdrop {
+  z-index: 999;
+}
+
+.input-group {
+  margin-bottom: 5px;
+}
+
+.input-group .input-group-addon, .form-control {
+  font-size: 12px;
+}

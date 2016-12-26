@@ -9,7 +9,7 @@
             <p class="">{{p.name}}</p>
             <p class="price">{{p.price | currency: '￥'}}</p>
         </div>
-        <div class="plus" ng-click="addToCart(p.id, p.price)">
+        <div class="plus" ng-click="addToCart(p.id, p.name, p.price)">
             <i class="fa fa-plus"></i>
         </div>
       </div>
