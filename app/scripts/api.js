@@ -90,7 +90,7 @@ module.exports = (function () {
             req.session.user = user;
             res.status(200).json(user);
           } else {
-            res.status(200).json({});
+            res.status(200).json(req.session.user);
           }
         });
       } else { // for debug, use default user
