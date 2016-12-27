@@ -12,8 +12,9 @@
   </div>
   <div class="btn-group">
     <div class="input-group input-group-sm">
-      <input type="text" class="form-control" placeholder="筛选商品..." ng-model="filter" ng-change="filterProducts()">
       <span class="input-group-addon"><a><i class="fa fa-search"></i></a></span>
+      <input type="text" class="form-control" placeholder="筛选商品..." ng-model="filter" ng-change="filterProducts()">
+      <a class="input-group-addon" ng-click="clearFilter()"><i class="glyphicon glyphicon-remove-circle"></i></a>
     </div>
   </div>
   <!--

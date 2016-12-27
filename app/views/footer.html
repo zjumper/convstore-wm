@@ -33,11 +33,13 @@
         <div>
           <div class="input-group">
             <span class="input-group-addon">联系电话：</span>
-            <input id="mobile" type="text" class="form-control" placeholder="请填写移动电话">
+            <input id="mobile" type="text" class="form-control" placeholder="请填写移动电话" ng-model="mobile">
+            <a class="input-group-addon" ng-click="clearMobile()"><i class="glyphicon glyphicon-remove-circle"></i></a>
           </div>
           <div class="input-group">
             <span class="input-group-addon">外送地址：</span>
-            <input id="address" type="text" class="form-control" placeholder="请填写具体地址">
+            <input id="address" type="text" class="form-control" placeholder="请填写具体地址" ng-model="address">
+            <a class="input-group-addon" ng-click="clearAddress()"><i class="glyphicon glyphicon-remove-circle"></i></a>
           </div>
         </div>
       </div>

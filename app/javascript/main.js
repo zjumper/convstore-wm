@@ -62,6 +62,10 @@ wmApp.controller('navCtl', ['$rootScope', '$scope', 'productService', function($
   $scope.filterProducts = function() {
     $rootScope.$broadcast('filter.products', $scope.filter);
   };
+  $scope.clearFilter = function() {
+    $scope.filter = '';
+    $rootScope.$broadcast('filter.products', $scope.filter);
+  }
 }]);
 
 /**
@@ -133,13 +137,17 @@ wmApp.controller('centerCtl', ['$scope', '$http', 'cartService', 'productService
  * Nav pane controller
  */
 wmApp.controller('footerCtl', ['$scope', '$http', 'cartService', function($scope, $http, cartService) {
+
+  $scope.mobile = '';
+  $scope.address = '';
   // get user info from server
   $http.get('/api/getUserInfo').success(function(data) {
     // console.log(data);
     // var user = JSON.parse(data);
     var user = data;
+    console.log(user);
     var img = user.headimgurl;
-    if(img) {
+    if(img && img != '/img/user-icon.png') {
       img = img.substring(0, img.length - 1) + '46';
       $scope.headimgurl = img;
     } else $scope.headimgurl = "/img/user-icon.png";
@@ -147,6 +155,12 @@ wmApp.controller('footerCtl', ['$scope', '$http', 'cartService', function($scope
     if(user.nickname)
       $scope.nickname = user.nickname;
     else $scope.nickname = "匿名";
+
+    var n = user.contact.length;
+    if(n > 0) {
+      $scope.mobile = user.contact[n - 1].mobile;
+      $scope.address = user.contact[n - 1].address;
+    }
   });
 
   //
@@ -163,6 +177,15 @@ wmApp.controller('footerCtl', ['$scope', '$http', 'cartService', function($scope
     }
   });
 
+  $scope.clearMobile = function() {
+    console.log('clear mobile');
+    $scope.mobile = '';
+  };
+
+  $scope.clearAddress = function() {
+    console.log('clear address');
+    $scope.address = '';
+  };
   $scope.tips = function(status, msg) {
     if(status === 'success') {
       $('#tips').text(msg).css({
@@ -197,8 +220,10 @@ wmApp.controller('footerCtl', ['$scope', '$http', 'cartService', function($scope
       $scope.tips('fail', '全时外送58元起送。');
     } else {
       var contact = {};
-      contact.mobile = $('#mobile').val();
-      contact.address = $('#address').val();
+      // contact.mobile = $('#mobile').val();
+      // contact.address = $('#address').val();
+      contact.mobile = $scope.mobile;
+      contact.address = $scope.address;
       if(contact.mobile == undefined || contact.mobile == ''
         || contact.address == undefined || contact.address == '') {
         $scope.tips('fail', '请填写正确的移动联系电话和外送地址信息！');

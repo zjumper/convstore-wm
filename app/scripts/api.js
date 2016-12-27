@@ -4,9 +4,11 @@ var config = require('./config'),
   https = require('https'),
   redis = require('redis'),
   _ = require('underscore'),
+  dateformat = require('dateformat'),
   angoose = require('angoose'),
   client = redis.createClient(),
-  log4js = require('log4js');
+  log4js = require('log4js'),
+  randomstring = require('randomstring');
 
 module.exports = (function () {
   var logger = log4js.getLogger('normal');
@@ -76,41 +78,103 @@ module.exports = (function () {
     getUserInfo: function(req, res) {
       var json = {};
       // load user info from session
-      if(req.session.user)
-        json = req.session.user;
-      res.status(200).json(json);
+      var User = angoose.getClass('User');
+      if(req.session.user) {
+        // json = req.session.user;
+        var query = User.findOne({openid: req.session.user.openid});
+        query.exec(function(err, user) {
+          if(user) {
+            // update headimgurl
+            user.headimgurl = req.session.user.headimgurl;
+            // update session user object
+            req.session.user = user;
+            res.status(200).json(user);
+          } else {
+            res.status(200).json({});
+          }
+        });
+      } else { // for debug, use default user
+        var query = User.findOne({openid: 'jlaijewojla92834lksjfl'});
+        query.exec(function(err, user) {
+          logger.info(user);
+          if(user) {
+            // update session user object
+            req.session.user = user;
+            res.status(200).json(user);
+          } else {
+            res.status(200).json(json);
+          }
+        });
+      }
     },
     submitOrder: function(req, res) {
-      // var u = req.session.user
-      var u = {
-        openid: 'jlaijewojla92834lksjfl',
-        nickname: 'zjumper',
-        sex: '1',
-        province: 'Beijing',
-        city: 'Beijing',
-        country: 'China',
-        headimgurl: '/img/user-icon.png',
-        privilege: [],
-        unionid: '',
-        contact: []
-      };
+      var u = req.session.user;
+      // var u = {
+      //   openid: 'jlaijewojla92834lksjfl',
+      //   nickname: 'zjumper',
+      //   sex: '1',
+      //   province: 'Beijing',
+      //   city: 'Beijing',
+      //   country: 'China',
+      //   headimgurl: '/img/user-icon.png',
+      //   privilege: [],
+      //   unionid: '',
+      //   contact: []
+      // };
       var order = req.body;
-      logger.info(order);
-      if(_.indexOf(u.contact, order.contact) < 0)
-        u.contact.push(order.contact);
+      // logger.info('order info -' + JSON.stringify(order));
       // save user information
       var User = angoose.getClass('User');
-      try {
-        var user = new User(u);
-        logger.info(user);
-        user.save();
-      } catch (e) {
-        logger.error(e);
-        res.status(500).json({status : 500});
-      }
-      // save order
+      var Order = angoose.getClass('Order');
+      var query = User.findOne({openid: u.openid});
+      query.exec(function(err, user) {
+        if(user) {
+          // logger.info(user);
+          if(_.find(user.contact, function(c) {
+            // logger.info(c);
+            return c.mobile === order.contact.mobile
+            && c.address === order.contact.address;
+          }) === undefined) {
+            user.contact.push(order.contact);
+            logger.info('pushed');
+          }
+          user.headimgurl = u.headimgurl;
+          // user.contact = u.contact;
+          // logger.info('user info - ' + JSON.stringify(user));
+          user.save((err) => {
+            if(err) {
+              logger.error(err);
+              res.status(500).json({status : 500});
+              return;
+            }
+            else logger.info('User info saved.');
 
-      res.status(200).json({status : 200});
+            // save order
+            var o = new Order({});
+            o.submittime = dateformat(new Date(), 'yyyymmddHHMMss');
+            o.orderid = o.submittime + randomstring.generate(8);
+            o.contact = order.contact;
+            o.contact.openid = u.openid;
+            o.total = order.total;
+            o.products = [];
+            for(var i in order.products) {
+              var p = order.products[i];
+              p.pid = i;
+              o.products.push(p);
+            }
+            // logger.info(o);
+            o.save(function(err) {
+              if(err) {
+                logger.error(err);
+                res.status(500).json({status : 500});
+                return;
+              }
+              else logger.info('Order info saved.');
+              res.status(200).json({status : 200});
+            });
+          });
+        }
+      });
     }
   };
 })();

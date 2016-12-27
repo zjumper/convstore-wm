@@ -14,7 +14,8 @@
     "https": "^1.0.0",
     "json3": "^3.3.2",
     "log4js": "^1.0.1",
-    "redis": "^2.6.3"
+    "redis": "^2.6.3",
+    "randomstring": "*"
   },
   "devDependencies": {
     "bower": "^1.4.1",

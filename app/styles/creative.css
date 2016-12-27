@@ -444,3 +444,12 @@ footer {
 .input-group .input-group-addon, .form-control {
   font-size: 12px;
 }
+
+.form-control {
+  border-left: 0;
+  border-right: 0;
+}
+
+.input-group-addon {
+  background-color: white;
+}
