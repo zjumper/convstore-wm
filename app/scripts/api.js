@@ -60,6 +60,31 @@ module.exports = (function () {
     return true;
   }
 
+  function saveOrder(Order, order, res) {
+    var o = new Order({});
+    o.submittime = dateformat(new Date(), 'yyyymmddHHMMss');
+    o.orderid = o.submittime + randomstring.generate(8);
+    o.contact = order.contact;
+    o.contact.openid = u.openid;
+    o.total = order.total;
+    o.products = [];
+    for(var i in order.products) {
+      var p = order.products[i];
+      p.pid = i;
+      o.products.push(p);
+    }
+    // logger.info(o);
+    o.save(function(err) {
+      if(err) {
+        logger.error(err);
+        res.status(500).json({status : 500});
+        return;
+      }
+      else logger.info('Order info saved.');
+      res.status(200).json({status : 200});
+    });
+  }
+
   return {
     getProductList: function (req, res) {
       //logger.debug('Get product list hit.');
@@ -150,6 +175,8 @@ module.exports = (function () {
             else logger.info('User info saved.');
 
             // save order
+            saveOrder(Order, order, res);
+            /*
             var o = new Order({});
             o.submittime = dateformat(new Date(), 'yyyymmddHHMMss');
             o.orderid = o.submittime + randomstring.generate(8);
@@ -172,7 +199,31 @@ module.exports = (function () {
               else logger.info('Order info saved.');
               res.status(200).json({status : 200});
             });
+            */
           });
+        } else { // new user
+          var newUser = new User(u);
+          if(newUser.contact)
+            newUser.contact.push(order.contact);
+          else {
+            if(_.find(user.contact, function(c) {
+              // logger.info(c);
+              return c.mobile === order.contact.mobile
+              && c.address === order.contact.address;
+            }) === undefined) {
+              user.contact.push(order.contact);
+              logger.info('pushed');
+            }
+          }
+          newUser.save((err) => {
+            if(err) {
+              logger.error(err);
+              res.status(500).json({status : 500});
+              return;
+            }
+            else logger.info('User info saved.');
+            saveOrder(Order, order, res);
+          }
         }
       });
     }

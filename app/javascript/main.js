@@ -214,7 +214,7 @@ wmApp.controller('footerCtl', ['$scope', '$http', 'cartService', function($scope
   };
 
   $scope.submitCart = function() {
-    // console.log('cart submit');
+    console.log('cart submit');
     $scope.hideTips();
     if($scope.cart.total.amount < 58) {
       $scope.tips('fail', '全时外送58元起送。');
@@ -321,13 +321,18 @@ wmApp.service('cartService', ['$rootScope', '$http', function($rootScope, $http)
     submit: function(contact) {
       var order = service.cart;
       order.contact = contact;
-      $http.post('/api/submitOrder', order).success(function(d) {
+      $http({
+        url:'/api/submitOrder',
+        method: 'POST',
+        data: order}).then(function(response) {
         // var msg = JSON.parse(d);
-        if(d.status == 200) {
+        if(response.data.status == 200) {
           $rootScope.$broadcast('cart.submit', 'success');
         } else {
           $rootScope.$broadcast('cart.submit', 'fail');
         }
+      }, function(response) {
+        console.log(response);
       });
     },
     getUserInfo: function(cb) {
