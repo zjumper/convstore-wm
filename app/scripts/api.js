@@ -223,7 +223,7 @@ module.exports = (function () {
             }
             else logger.info('User info saved.');
             saveOrder(Order, order, res);
-          }
+          });
         }
       });
     }
