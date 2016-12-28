@@ -60,7 +60,7 @@ module.exports = (function () {
     return true;
   }
 
-  function saveOrder(Order, order, res) {
+  function saveOrder(Order, order, u, res) {
     var o = new Order({});
     o.submittime = dateformat(new Date(), 'yyyymmddHHMMss');
     o.orderid = o.submittime + randomstring.generate(8);
@@ -175,7 +175,7 @@ module.exports = (function () {
             else logger.info('User info saved.');
 
             // save order
-            saveOrder(Order, order, res);
+            saveOrder(Order, order, u, res);
             /*
             var o = new Order({});
             o.submittime = dateformat(new Date(), 'yyyymmddHHMMss');
@@ -222,7 +222,7 @@ module.exports = (function () {
               return;
             }
             else logger.info('User info saved.');
-            saveOrder(Order, order, res);
+            saveOrder(Order, order, u, res);
           });
         }
       });
