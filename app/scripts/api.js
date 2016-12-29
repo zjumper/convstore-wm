@@ -73,6 +73,7 @@ module.exports = (function () {
       p.pid = i;
       o.products.push(p);
     }
+    o.status = 0;
     // logger.info(o);
     o.save(function(err) {
       if(err) {
