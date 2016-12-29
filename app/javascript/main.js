@@ -368,11 +368,12 @@ wmApp.controller('ordersCtl', ['$scope', '$http', 'Order', function($scope, $htt
     var reg = $scope.date.Format('yyyyMMdd') + '.*';
     $scope.allOrders = Order.$query({orderid: {$regex: reg}});
     $scope.orders = $scope.allOrders;
+    $('#datepicker').datepicker('hide');
   });
   $scope.date = new Date();
   $scope.dateStr = $scope.date.Format('yyyy/MM/dd');
-  // $scope.orders = Order.$query({orderid: {$regex: $scope.date.Format('yyyyMMdd') + '.*'}});
-  $scope.allOrders = Order.$query({orderid: {$regex: '20161228.*'}});
+  $scope.orders = Order.$query({orderid: {$regex: $scope.date.Format('yyyyMMdd') + '.*'}});
+  // $scope.allOrders = Order.$query({orderid: {$regex: '20161228.*'}});
   $scope.orders = $scope.allOrders;
   $scope.filter = '';
   $scope.filterOrders = function() {
