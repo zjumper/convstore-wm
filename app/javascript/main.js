@@ -29,6 +29,16 @@ wmApp.config(function($stateProvider, $urlRouterProvider) {
               },
             }
         })
+        .state('orders', {
+            url: '/orders',
+            views: {
+              '': {
+                templateUrl: 'views/orders.html',
+                controller: 'ordersCtl'
+              }
+            }
+
+        })
         .state('about', {
             url: '/about',
             views: {
@@ -343,4 +353,49 @@ wmApp.service('cartService', ['$rootScope', '$http', function($rootScope, $http)
     }
   };
   return service;
+}]);
+
+/**
+ * Orders page controller
+ */
+wmApp.controller('ordersCtl', ['$scope', '$http', 'Order', function($scope, $http, Order) {
+  // Datepicker component initialization
+  $('#datepicker').datepicker({
+    format: 'yyyy/mm/dd',
+    startDate: '-7d'
+  }).on('changeDate', function(e) {
+    $scope.date = $('#datepicker').datepicker('getDate');
+    var reg = $scope.date.Format('yyyyMMdd') + '.*';
+    $scope.allOrders = Order.$query({orderid: {$regex: reg}});
+    $scope.orders = $scope.allOrders;
+  });
+  $scope.date = new Date();
+  $scope.dateStr = $scope.date.Format('yyyy/MM/dd');
+  // $scope.orders = Order.$query({orderid: {$regex: $scope.date.Format('yyyyMMdd') + '.*'}});
+  $scope.allOrders = Order.$query({orderid: {$regex: '20161228.*'}});
+  $scope.orders = $scope.allOrders;
+  $scope.filter = '';
+  $scope.filterOrders = function() {
+    if($scope.filter != '')
+      $scope.orders = _.filter($scope.allOrders, function(o) {
+        return o.orderid.toLowerCase().indexOf($scope.filter.toLowerCase()) > -1;
+      });
+    else $scope.orders = $scope.allOrders;
+  };
+  $scope.clearFilter = function() {
+    $scope.filter = '';
+    $scope.filterOrders();
+  };
+  $scope.getOrderStatus = function(status) {
+    var s = '';
+    switch(status) {
+      case 0: s = '未处理';
+      case 1: s = '已确认';
+      case 2: s = '已派送';
+      case 3: s = '已关闭';
+      case -1: s = '已取消';
+      default: s = '未处理';
+    }
+    return s;
+  };
 }]);

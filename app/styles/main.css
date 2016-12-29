@@ -117,6 +117,10 @@ body {
   padding: 5px 5px;
 }
 
-#cart-modal .badge {
+.badge {
   background-color: #F05F40;
+}
+
+#order-center {
+  margin-top: 40px;
 }

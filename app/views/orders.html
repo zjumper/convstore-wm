@@ -1,0 +1,50 @@
+<div class="container-fluid">
+  <!-- NAV BAR -->
+  <div id="order-nav" class="btn-group btn-group-justified navbar-fixed-top">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="btn-group">
+      <div class="input-group input-group-sm">
+        <span class="input-group-addon"><a><i class="fa fa-calendar"></i></a></span>
+        <input id="datepicker" type="text" class="form-control" ng-model="dateStr">
+      </div>
+    </div>
+    <div class="btn-group">
+      <div class="input-group input-group-sm">
+        <span class="input-group-addon"><a><i class="fa fa-search"></i></a></span>
+        <input type="text" class="form-control" placeholder="订单号..." ng-model="filter" ng-change="filterOrders()">
+        <a class="input-group-addon" ng-click="clearFilter()"><i class="glyphicon glyphicon-remove-circle"></i></a>
+      </div>
+    </div>
+    <!--
+    <div class="btn-group">
+      <button type="button" class="btn btn-default">
+          <a class="page-scroll" href="#cart"><i class="fa fa-shopping-cart"></i>购物车</a>
+      </button>
+    </div>
+  -->
+  </div>
+  <!-- MAIN CONTENT -->
+  <div id="order-center" class="container-fluid">
+    <div class="row"> 订单数 : {{orders.length}}</div>
+    <div class="row">
+      <div class="col-xs-12 " ng-repeat="o in orders">
+        <div class="panel panel-default product">
+          <div class="panel-heading">
+            订单号 : <span class="link sum">{{o.orderid}}</span>
+            <span class="badge">{{getOrderStatus(o.status)}}</span>
+          </div>
+          <div class="panel-body">
+            <ul class="list-group">
+              <li class="list-group-item" ng-repeat="prod in o.products"><span class="badge">{{prod.num}}</span>
+                {{prod.name}}({{prod.price | currency: '￥'}})
+              </li>
+            </ul>
+            <div class="sum">金额：{{o.total.amount | currency: '￥'}}</div>
+            <div class="">联系电话：{{o.contact.mobile}}</div>
+            <div class="">外送地址：{{o.contact.address}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
