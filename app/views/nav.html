@@ -2,11 +2,21 @@
   <!-- Brand and toggle get grouped for better mobile display -->
   <div class="btn-group">
     <button type="button" class="btn btn-default dropdown-toggle link" data-toggle="dropdown">
-        <i class="fa fa-bars"></i> 品类 - <span>{{category}}</span>
+        <i class="fa fa-bars"></i> 品类 &gt; <span>{{category.label}}</span>
     </button>
     <ul class="dropdown-menu" role="menu">
         <li ng-repeat="i in categories">
-            <a ng-click="changeCategory(i.id)">{{i.label}}</a>
+            <a ng-click="changeCategory(i.code)">{{i.label}}</a>
+        </li>
+    </ul>
+  </div>
+  <div class="btn-group">
+    <button type="button" class="btn btn-default dropdown-toggle link" data-toggle="dropdown">
+        &gt; <span>{{subcat.label}}</span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+        <li ng-repeat="i in category.subcat">
+            <a ng-click="changeCategory(i.code)">{{i.label}}</a>
         </li>
     </ul>
   </div>

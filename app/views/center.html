@@ -3,10 +3,10 @@
     <div class="col-xs-6 " ng-repeat="p in products">
       <div class="panel panel-default product">
         <div class="product-img">
-            <img ng-src="img/{{p.pic}}">
+            <img class="product-icon" ng-src="img/{{p.pic}}">
         </div>
         <div class="product-info">
-            <p class="">{{p.name}}</p>
+            <p class="name">{{p.name}}</p>
             <p class="price">{{p.price | currency: '￥'}}</p>
         </div>
         <div class="plus" ng-click="addToCart(p.id, p.name, p.price)">

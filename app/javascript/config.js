@@ -1,13 +1,4 @@
-module.exports = {
-  TOKEN: 'quanshiguanhuguoji0828',
-  KEY_ACCESS_TOKEN: 'ACCESS_TOKEN',
-  KEY_JSAPI_TICKET: 'JSAPI_TICKET',
-
-  STOMP_HOST: '127.0.0.1',
-  STOMP_PORT: 61613,
-  STOMP_USER: 'admin11',
-  STOMP_PASSWD: 'admin',
-
+var config = {
   // product categories
   CATEGORIES: [
     {

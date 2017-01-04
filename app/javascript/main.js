@@ -58,16 +58,21 @@ wmApp.config(function($stateProvider, $urlRouterProvider) {
  */
 wmApp.controller('navCtl', ['$rootScope', '$scope', 'productService', function($rootScope, $scope, productService) {
   $scope.filter = '';
-  $scope.categories = [{id:0, label:'热餐', link:'#home'},
-    {id:1, label:'餐饮', link:'#about'},
-    {id:2, label:'食品', link:'#daily'},
-    {id:3, label:'百货', link:'#daily'},
-    {id:4, label:'其他', link:'#other'}];
-  $scope.category = $scope.categories[0].label;
+  $scope.categories = config.CATEGORIES;
+  $scope.category = $scope.categories[0];
+  $scope.subcat = $scope.category.subcat[0];
+  // productService.loadProduct($scope.category.code);
 
   $scope.changeCategory = function(cate) {
+    if(cate.length === 2) {
+      $scope.category = _.find($scope.categories, function(item) { return item.code === cate; });
+      $scope.subcat = $scope.category.subcat[0];  // restore sub category to ALL
+    } else {
+      var c = cate.substring(0, 2);
+      var l1 = _.find($scope.categories, function(item) { return item.code === c; });
+      $scope.subcat = _.find(l1.subcat, function(item) { return item.code === cate; });
+    }
     productService.loadProduct(cate);
-    $scope.category = $scope.categories[cate].label;
   };
   $scope.filterProducts = function() {
     $rootScope.$broadcast('filter.products', $scope.filter);
@@ -82,31 +87,9 @@ wmApp.controller('navCtl', ['$rootScope', '$scope', 'productService', function($
  * Main pane controller
  */
 wmApp.controller('centerCtl', ['$scope', '$http', 'cartService', 'productService', function($scope, $http, cartService, productService) {
-  // $scope.products = [{id:0, label:'热餐', pic:'box.png', price:1.00, link:'#home'},
-  //   {id:1, label:'煮雨颜文字君玛格丽特手印饼（蛋黄&抹', pic:'box.png', price:1.00, unit:'个', link:'#about'},
-  //   {id:2, label:'日用', pic:'box.png', price:1.00, unit:'个', link:'#daily'},
-  //   {id:1, label:'零食', pic:'box.png', price:1.00, unit:'个', link:'#about'},
-  //   {id:2, label:'日用', pic:'box.png', price:1.00, unit:'个', link:'#daily'},
-  //   {id:1, label:'零食', pic:'box.png', price:1.00, unit:'个', link:'#about'},
-  //   {id:2, label:'日用', pic:'box.png', price:1.00, unit:'个', link:'#daily'},
-  //   {id:1, label:'零食', pic:'box.png', price:1.00, unit:'个', link:'#about'},
-  //   {id:2, label:'日用', pic:'box.png', price:1.00, unit:'个', link:'#daily'},
-  //   {id:1, label:'零食', pic:'box.png', price:1.00, unit:'个', link:'#about'},
-  //   {id:2, label:'日用', pic:'box.png', price:1.00, unit:'个', link:'#daily'},
-  //   {id:1, label:'零食', pic:'box.png', price:1.00, unit:'个', link:'#about'},
-  //   {id:2, label:'日用', pic:'box.png', price:1.00, unit:'个', link:'#daily'},
-  //   {id:1, label:'零食', pic:'box.png', price:1.00, unit:'个', link:'#about'},
-  //   {id:2, label:'日用', pic:'box.png', price:1.00, unit:'个', link:'#daily'},
-  //   {id:1, label:'零食', pic:'box.png', price:1.00, unit:'个', link:'#about'},
-  //   {id:2, label:'日用', pic:'box.png', price:1.00, unit:'个', link:'#daily'},
-  //   {id:1, label:'零食', pic:'box.png', price:1.00, unit:'个', link:'#about'},
-  //   {id:2, label:'日用', pic:'box.png', price:1.00, unit:'个', link:'#daily'},
-  //   {id:1, label:'零食', pic:'box.png', price:1.00, unit:'个', link:'#about'},
-  //   {id:2, label:'日用', pic:'box.png', price:1.00, unit:'个', link:'#daily'},
-  //   {id:3, label:'其他', pic:'box.png', price:1.00, unit:'个', link:'#other'}];
 
   // $scope.products = Product.$query({});
-  $scope.products = productService.loadProduct(0);
+  $scope.products = productService.loadProduct('01');
 
     // $scope.$broadcast('dataloaded');
     // productService.initData();
@@ -148,6 +131,8 @@ wmApp.controller('centerCtl', ['$scope', '$http', 'cartService', 'productService
  */
 wmApp.controller('footerCtl', ['$scope', '$http', 'cartService', function($scope, $http, cartService) {
 
+  $scope.timeSlots = [];
+  $scope.schedule = '';
   $scope.mobile = '';
   $scope.address = '';
   // get user info from server
@@ -155,7 +140,7 @@ wmApp.controller('footerCtl', ['$scope', '$http', 'cartService', function($scope
     // console.log(data);
     // var user = JSON.parse(data);
     var user = data;
-    console.log(user);
+    // console.log(user);
     var img = user.headimgurl;
     if(img && img != '/img/user-icon.png') {
       img = img.substring(0, img.length - 1) + '46';
@@ -173,6 +158,22 @@ wmApp.controller('footerCtl', ['$scope', '$http', 'cartService', function($scope
     }
   });
 
+  // calculate shcedule time slots
+  var now = new Date();
+  var h = now.getHours();
+  var m = now.getMinutes();
+  var max = h + 8;
+  for(var i = h; i < max; i ++) {
+    var hh = i % 24;
+    var next = (i + 1) % 24;
+    $scope.timeSlots.push(hh + ':00 - ' + hh + ':30');
+    $scope.timeSlots.push(hh + ':30 - ' + next + ':00');
+  }
+  if(m >= 30) {
+    $scope.timeSlots.shift();
+  }
+  $scope.schedule = $scope.timeSlots[0];
+
   //
   $scope.cart = cartService.cart;
   $scope.$on('cart.change', function(event){
@@ -188,12 +189,12 @@ wmApp.controller('footerCtl', ['$scope', '$http', 'cartService', function($scope
   });
 
   $scope.clearMobile = function() {
-    console.log('clear mobile');
+    // console.log('clear mobile');
     $scope.mobile = '';
   };
 
   $scope.clearAddress = function() {
-    console.log('clear address');
+    // console.log('clear address');
     $scope.address = '';
   };
   $scope.tips = function(status, msg) {
@@ -223,23 +224,35 @@ wmApp.controller('footerCtl', ['$scope', '$http', 'cartService', function($scope
     cartService.empty();
   };
 
+  $scope.isEmpty = function() {
+    // console.log($scope.cart.products);
+    for(var k in $scope.cart.products) {
+      if($scope.cart.products.hasOwnProperty(k)) {
+            return false;
+      }
+    }
+    return true;
+  }
+
   $scope.submitCart = function() {
-    console.log('cart submit');
+    // console.log('cart submit');
     $scope.hideTips();
-    if($scope.cart.total.amount < 58) {
-      $scope.tips('fail', '全时外送58元起送。');
-    } else {
+    if($scope.cart.total.amount < 30) {// total amount less than 30, stop
+      $scope.tips('fail', '全时外送满30元起送，外送费5元，满58元免外送费。');
+    } else {// more than 30
       var contact = {};
-      // contact.mobile = $('#mobile').val();
-      // contact.address = $('#address').val();
       contact.mobile = $scope.mobile;
       contact.address = $scope.address;
+      contact.schedule = $scope.schedule;
+      // console.log(contact);
       if(contact.mobile == undefined || contact.mobile == ''
         || contact.address == undefined || contact.address == '') {
         $scope.tips('fail', '请填写正确的移动联系电话和外送地址信息！');
         return;
       }
-      cartService.submit(contact);
+      // less than 58?
+      var flag = $scope.cart.total.amount < 58;
+      cartService.submit(contact, flag);
     }
   };
 }]);
@@ -251,11 +264,12 @@ wmApp.service('productService', ['$rootScope', 'Product', function($rootScope, P
   var svc = {
     currentProducts: [],
     loadProduct: function(cat) {
+      // console.log('load category: ', cat);
       var ret = {};
-      if(cat) {
+      if(cat.length == 2) {
         ret = Product.$query({'category': cat});
       } else {
-        ret = Product.$query({});
+        ret = Product.$query({'subcat': cat});
       }
       svc.currentProducts = ret;
       $rootScope.$broadcast('category.change');
@@ -328,9 +342,16 @@ wmApp.service('cartService', ['$rootScope', '$http', function($rootScope, $http)
       service.cart = emptyCart;
       $rootScope.$broadcast('cart.change');
     },
-    submit: function(contact) {
+    submit: function(contact, flag) {
+      // console.log(contact);
       var order = service.cart;
+      if(flag) {// less than 58
+        order.total.amount += 5;
+      }
+      order.schedule = contact.schedule;
+      contact.schedule = undefined;
       order.contact = contact;
+      // console.log(order);
       $http({
         url:'/api/submitOrder',
         method: 'POST',
@@ -362,6 +383,12 @@ wmApp.controller('ordersCtl', ['$scope', '$http', 'Order', function($scope, $htt
   // Datepicker component initialization
   $('#datepicker').datepicker({
     format: 'yyyy/mm/dd',
+    // format: 'hh:mm',
+    // pickDate: false,
+    // pickTime: true,
+    // hourStep: 1,
+    // minuteStep: 15,
+    // secondStep: 30,
     startDate: '-7d'
   }).on('changeDate', function(e) {
     $scope.date = $('#datepicker').datepicker('getDate');

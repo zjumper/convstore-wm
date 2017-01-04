@@ -57,11 +57,19 @@ body {
   float: left;
 }
 
+.product-icon {
+  width: 48px;
+}
+
 .product-info {
   padding-left: 60px;
 }
 
-.price {
+.product-info .name {
+  height: 40px;
+  overflow-y: hidden;
+}
+.product-info .price {
   color: #F05F40;
 }
 
@@ -108,6 +116,10 @@ body {
 
 .cart-list ul {
 
+}
+
+.ship-tip {
+  color: #afafaf;
 }
 
 .sum {

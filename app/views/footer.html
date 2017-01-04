@@ -24,13 +24,21 @@
         <h4 class="modal-title" id="myModalLabel">您的外送单</h4>
       </div>
       <div class="modal-body">
+        <div ng-show="isEmpty()">您的购物车空空如也~~</div>
         <ul class="list-group">
           <li class="list-group-item" ng-repeat="(id, prod) in cart.products"><span class="badge">{{prod.num}}</span>
             {{prod.name}}({{prod.price | currency: '￥'}})
           </li>
         </ul>
+        <div class="ship-tip">注：30元起送，加收5元配送费，满58元免配送费。</div>
         <div class="sum">合计：{{cart.total.amount | currency: '￥'}}</div>
         <div>
+          <div class="input-group">
+            <span class="input-group-addon">配送时间：</span>
+            <select id="schedule" type="text" class="form-control" ng-model="schedule">
+              <option ng-repeat="t in timeSlots" value="{{t}}">{{t}}</option>
+            </select>
+          </div>
           <div class="input-group">
             <span class="input-group-addon">联系电话：</span>
             <input id="mobile" type="text" class="form-control" placeholder="请填写移动电话" ng-model="mobile">

@@ -7,13 +7,14 @@ var config = require('./config'),
   dateformat = require('dateformat'),
   angoose = require('angoose'),
   client = redis.createClient(),
+  Stomp = require('stomp-client'),
   log4js = require('log4js'),
   randomstring = require('randomstring');
 
 module.exports = (function () {
   var logger = log4js.getLogger('normal');
-  function initAccessToken(cb) {
 
+  function initAccessToken(cb) {
     // request access_token
     var options = {
       hostname: 'api.weixin.qq.com',
@@ -60,11 +61,16 @@ module.exports = (function () {
     return true;
   }
 
+  function sendMsg(order) {
+
+  }
+
   function saveOrder(Order, order, u, res) {
     var o = new Order({});
     o.submittime = dateformat(new Date(), 'yyyymmddHHMMss');
     o.orderid = o.submittime + randomstring.generate(8);
     o.contact = order.contact;
+    o.schedule = order.schedule;
     o.contact.openid = u.openid;
     o.total = order.total;
     o.products = [];
@@ -134,6 +140,7 @@ module.exports = (function () {
       }
     },
     submitOrder: function(req, res) {
+      // logger.info('session user: ', req.session.user);
       var u = req.session.user;
       // var u = {
       //   openid: 'jlaijewojla92834lksjfl',
