@@ -5,7 +5,7 @@ var client = new Stomp(config.STOMP_HOST, config.STOMP_PORT, config.STOMP_USER, 
 
 client.connect(function(sessionId) {
   console.log(sessionId);
-  client.subscribe('/topic/order', function(body, headers) {
+  client.subscribe('/topics/order', function(body, headers) {
     console.log('from MQ:' + body);
   });
 });

@@ -136,3 +136,33 @@ body {
 #order-center {
   margin-top: 40px;
 }
+
+.rt-header {
+  background-color: white;
+  border-bottom: 1px solid #cdcdcd;
+  text-align: center;
+}
+
+.rt-op {
+  float: right;
+}
+
+#order-center .undealt {
+  background-color: #F05F40;
+}
+
+#order-center .confirmed {
+  background-color: #949440;
+}
+
+#order-center .sendout {
+  background-color: #286090;
+}
+
+#order-center .closed {
+  background-color: #08CE08;
+}
+
+#order-center .cancled {
+  background-color: #A0A0A0;
+}

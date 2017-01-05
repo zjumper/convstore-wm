@@ -54,7 +54,7 @@
       <div class="modal-footer">
         <div id="tips" aria-hidden="true"></div>
         <button type="button" class="btn btn-cancel" ng-click="emptyCart()">清空</button>
-        <button type="button" class="btn btn-primary" ng-click="submitCart()">下单</button>
+        <button type="button" class="btn btn-primary" ng-disabled="submitted" ng-click="submitCart()">下单</button>
       </div>
     </div>
   </div>

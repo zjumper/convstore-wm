@@ -1,0 +1,36 @@
+<div class="container-fluid">
+  <!-- NAV BAR -->
+  <div id="order-nav" class="btn-group btn-group-justified navbar-fixed-top">
+    <div class="sum rt-header">全时外送-实时订单（{{orders.length}}）</div>
+  </div>
+  <!-- MAIN CONTENT -->
+  <div id="order-center" class="container-fluid">
+    <div class="row">
+      <div class="col-xs-12 " ng-repeat="o in orders">
+        <div class="panel panel-default product">
+          <div class="panel-heading">
+            No{{$index + 1}} : <span class="link sum">{{o.orderid}}</span>
+            <span ng-class="{'0':'undealt', '1':'confirmed', '2':'sendout', '3':'closed', '-1':'cancled'}[o.status.toString()]" class="badge">{{getOrderStatus(o.status)}}</span>
+          </div>
+          <div class="panel-body">
+            <ul class="list-group">
+              <li class="list-group-item" ng-repeat="prod in o.products"><span class="badge">{{prod.num}}</span>
+                {{prod.name}}({{prod.price | currency: '￥'}})
+              </li>
+            </ul>
+            <div class="sum">金额：{{o.total.amount | currency: '￥'}}</div>
+            <div class="">配送时间：{{o.schedule}}</div>
+            <div class="">联系电话：{{o.contact.mobile}}</div>
+            <div class="">外送地址：{{o.contact.address}}</div>
+            <div class="rt-op">
+              <button type="button" class="btn btn-primary" ng-show="o.status == 0" ng-click="confirm(o.orderid)">确认</button>
+              <button type="button" class="btn btn-primary" ng-show="o.status < 2 && o.status > -1" ng-click="sendout(o.orderid)">送出</button>
+              <button type="button" class="btn btn-primary" ng-show="o.status == 2" ng-click="close(o.orderid)">结单</button>
+              <button type="button" class="btn btn-cancel" ng-show="o.status < 3 && o.status > -1" ng-click="cancel(o.orderid)">撤销</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

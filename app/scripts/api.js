@@ -9,10 +9,15 @@ var config = require('./config'),
   client = redis.createClient(),
   Stomp = require('stomp-client'),
   log4js = require('log4js'),
+  Stomp = require('stomp-client'),
   randomstring = require('randomstring');
 
 module.exports = (function () {
   var logger = log4js.getLogger('normal');
+  config.client = new Stomp(config.STOMP_HOST, config.STOMP_PORT, config.STOMP_USER, config.STOMP_PASSWD);
+  config.client.connect(function(sessionId) {
+    console.log(sessionId);
+  });
 
   function initAccessToken(cb) {
     // request access_token
@@ -61,10 +66,6 @@ module.exports = (function () {
     return true;
   }
 
-  function sendMsg(order) {
-
-  }
-
   function saveOrder(Order, order, u, res) {
     var o = new Order({});
     o.submittime = dateformat(new Date(), 'yyyymmddHHMMss');
@@ -88,6 +89,8 @@ module.exports = (function () {
         return;
       }
       else logger.info('Order info saved.');
+      // send order message to MQ
+      config.client.publish(config.STOMP_TOPIC, json.stringify(o));
       res.status(200).json({status : 200});
     });
   }

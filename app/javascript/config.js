@@ -1,4 +1,10 @@
 var config = {
+  STOMP_HOST: '127.0.0.1',
+  STOMP_PORT: 61613,
+  STOMP_USER: 'admin11',
+  STOMP_PASSWD: 'admin',
+  STOMP_TOPIC: '/topic/order',
+
   // product categories
   CATEGORIES: [
     {

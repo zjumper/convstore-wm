@@ -37,7 +37,15 @@ wmApp.config(function($stateProvider, $urlRouterProvider) {
                 controller: 'ordersCtl'
               }
             }
-
+        })
+        .state('realtime', {
+            url: '/realtime',
+            views: {
+              '': {
+                templateUrl: 'views/realtime.html',
+                controller: 'realtimeCtl'
+              }
+            }
         })
         .state('about', {
             url: '/about',
@@ -130,7 +138,7 @@ wmApp.controller('centerCtl', ['$scope', '$http', 'cartService', 'productService
  * Nav pane controller
  */
 wmApp.controller('footerCtl', ['$scope', '$http', 'cartService', function($scope, $http, cartService) {
-
+  $scope.submitted = false;
   $scope.timeSlots = [];
   $scope.schedule = '';
   $scope.mobile = '';
@@ -178,11 +186,13 @@ wmApp.controller('footerCtl', ['$scope', '$http', 'cartService', function($scope
   $scope.cart = cartService.cart;
   $scope.$on('cart.change', function(event){
     $scope.cart = cartService.cart;
+    $scope.submitted = false;
     // console.log($scope.cart);
   });
   $scope.$on('cart.submit', function(event, data) {
     if(data === 'success') {
       $scope.tips('success', '您的订单已经确认，我们将尽快为您派送！');
+      $scope.submitted = true;
     } else {
       $scope.tips('fail', '抱歉，您的订单提交发生错误，请稍后再试或电话与我们联系，85856735。');
     }
@@ -383,12 +393,6 @@ wmApp.controller('ordersCtl', ['$scope', '$http', 'Order', function($scope, $htt
   // Datepicker component initialization
   $('#datepicker').datepicker({
     format: 'yyyy/mm/dd',
-    // format: 'hh:mm',
-    // pickDate: false,
-    // pickTime: true,
-    // hourStep: 1,
-    // minuteStep: 15,
-    // secondStep: 30,
     startDate: '-7d'
   }).on('changeDate', function(e) {
     $scope.date = $('#datepicker').datepicker('getDate');
@@ -417,13 +421,101 @@ wmApp.controller('ordersCtl', ['$scope', '$http', 'Order', function($scope, $htt
   $scope.getOrderStatus = function(status) {
     var s = '';
     switch(status) {
-      case 0: s = '未处理';
-      case 1: s = '已确认';
-      case 2: s = '已派送';
-      case 3: s = '已关闭';
-      case -1: s = '已取消';
+      case 0: s = '未处理'; break;
+      case 1: s = '已确认'; break;
+      case 2: s = '已派送'; break;
+      case 3: s = '已结单'; break;
+      case -1: s = '已取消'; break;
       default: s = '未处理';
     }
     return s;
   };
+}]);
+
+/**
+ * Realtime order page controller
+ */
+wmApp.controller('realtimeCtl', ['$scope', '$http', 'Order', function($scope, $http, Order) {
+  var url = "ws://localhost:61614/stomp";
+  // var ws = new SockJS(url);
+  // var client = Stomp.over(ws);
+  config.client = Stomp.client(url);
+  // config.client = Stomp.over(ws);
+  config.client.connect(config.STOMP_USER, config.STOMP_PASSWD, ()=>{
+    console.log('stomp connected.');
+    try {
+      config.subscription = config.client.subscribe(config.STOMP_TOPIC, function (message) {
+        // console.log(message);
+        var order = JSON.parse(message.body);
+        var o = new Order(order);
+        $scope.orders.push(o);
+        // console.log($scope.orders);
+        $scope.$apply();
+      }, function (err) {
+        console.log(err);
+      }, {'activemq.retroactive':true});
+    } catch(e) {
+      console.log(e);
+    }
+  }, (err)=>{console.log(err);});
+
+  var now = new Date()
+  var ms = now.getTime();
+  ms -= 12 * 60 * 60 * 1000;
+  now.setTime(ms);
+  var t = now.Format('yyyyMMddhhmmss');
+  $scope.orders = Order.$query({submittime: {$gt: t }});
+
+  $scope.confirm = function(id) {
+    var o = _.find($scope.orders, function(item) { return item.orderid === id; });
+    o.status = 1;
+    $scope.sendStatus(o);
+  };
+
+  $scope.sendout = function(id) {
+    var o = _.find($scope.orders, function(item) { return item.orderid === id; });
+    o.status = 2;
+    $scope.sendStatus(o);
+  };
+
+  $scope.close = function(id) {
+    var o = _.find($scope.orders, function(item) { return item.orderid === id; });
+    o.status = 3;
+    $scope.sendStatus(o);
+  };
+
+  $scope.cancel = function(id) {
+    var o = _.find($scope.orders, function(item) { return item.orderid === id; });
+    o.status = -1;
+    $scope.sendStatus(o);
+  };
+
+  $scope.sendStatus = function(order) {
+    order.save((err) => {
+      if(err)
+        console.log(err);
+      else console.log('Order status changed.');
+    });
+  };
+
+  $scope.getOrderStatus = function(status) {
+    var s = '';
+    switch(status) {
+      case 0: s = '未处理'; break;
+      case 1: s = '已确认'; break;
+      case 2: s = '已派送'; break;
+      case 3: s = '已结单'; break;
+      case -1: s = '已取消'; break;
+      default: s = '未处理';
+    }
+    return s;
+  };
+
+  $scope.$on('$destroy', function(event) {
+    console.log('realtime scope destroyed.');
+    config.subscription.unsubscribe();
+    config.client.disconnect((err)=>{ console.log(err); });
+    // alert('realtime scope destroyed.');
+  });
+
 }]);
