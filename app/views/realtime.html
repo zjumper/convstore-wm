@@ -19,6 +19,7 @@
               </li>
             </ul>
             <div class="sum">金额：{{o.total.amount | currency: '￥'}}</div>
+            <div class="">下单时间：{{convDateString(o.submittime)}}</div>
             <div class="">配送时间：{{o.schedule}}</div>
             <div class="">联系电话：{{o.contact.mobile}}</div>
             <div class="">外送地址：{{o.contact.address}}</div>

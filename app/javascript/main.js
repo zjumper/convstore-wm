@@ -430,13 +430,19 @@ wmApp.controller('ordersCtl', ['$scope', '$http', 'Order', function($scope, $htt
     }
     return s;
   };
+  $scope.convDateString = function(short) {
+    if(short == undefined || short.length != 14)
+      return short
+    return short.substring(0,4) + '-' + short.substring(4,6) + '-' + short.substring(6,8)
+      + ' ' + short.substring(8,10) + ':' + short.substring(10,12) + ':' + short.substring(12);
+  };
 }]);
 
 /**
  * Realtime order page controller
  */
 wmApp.controller('realtimeCtl', ['$scope', '$http', 'Order', function($scope, $http, Order) {
-  var url = "ws://localhost:61614/stomp";
+  var url = 'ws://' + config.STOMP_HOST + ':' + config.STOMP_PORT + '/stomp';
   // var ws = new SockJS(url);
   // var client = Stomp.over(ws);
   config.client = Stomp.client(url);
@@ -509,6 +515,12 @@ wmApp.controller('realtimeCtl', ['$scope', '$http', 'Order', function($scope, $h
       default: s = '未处理';
     }
     return s;
+  };
+
+  $scope.convDateString = function(short) {
+    if(short == undefined || short.length != 14)
+      return short
+    return short.substring(8,10) + ':' + short.substring(10,12) + ':' + short.substring(12);
   };
 
   $scope.$on('$destroy', function(event) {
