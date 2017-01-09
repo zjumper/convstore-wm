@@ -4,6 +4,7 @@ var config = {
   STOMP_USER: 'admin11',
   STOMP_PASSWD: 'admin',
   STOMP_TOPIC: '/topic/order',
+  NOTICE_AUDIO: '/img/notice.wav',
 
   // product categories
   CATEGORIES: [

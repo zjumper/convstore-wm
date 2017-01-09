@@ -10,10 +10,10 @@
     <a class="navbar-brand" href="#">Brand</a>
   </div>-->
   <div class="row">
-    <div class="col-md-1 col-xs-1">
+    <div class="col-md-1 col-xs-1 narrow">
       <p class="nav-text"><i class="fa fa-bars cat-icon"></i></p>
     </div>
-    <div class="col-md-1 col-xs-2 dropdown">
+    <div class="col-md-1 col-xs-2 narrow dropdown">
       <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
           <span>{{category.label}}</span>
       </button>
@@ -23,7 +23,7 @@
           </li>
       </ul>
     </div>
-    <div class="col-md-1 col-xs-3 dropdown">
+    <div class="col-md-1 col-xs-4 narrow dropdown">
       <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
           | <span>{{subcat.label}}</span>
       </button>
@@ -33,7 +33,7 @@
           </li>
       </ul>
     </div>
-    <div class="col-md-2 col-xs-6 btn-group">
+    <div class="col-md-2 col-xs-5 narrow btn-group">
       <div class="input-group input-group-sm">
         <span class="input-group-addon"><a><i class="fa fa-search"></i></a></span>
         <input type="text" class="form-control" placeholder="筛选商品..." ng-model="filter" ng-change="filterProducts()">

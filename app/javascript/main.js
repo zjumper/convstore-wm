@@ -497,6 +497,7 @@ wmApp.controller('realtimeCtl', ['$scope', '$http', 'Order', function($scope, $h
         $scope.orders.push(o);
         // console.log($scope.orders);
         $scope.$apply();
+        $scope.playNotice();
       }, function (err) {
         console.log(err);
       }, {'activemq.retroactive':true});
@@ -561,6 +562,18 @@ wmApp.controller('realtimeCtl', ['$scope', '$http', 'Order', function($scope, $h
     if(short == undefined || short.length != 14)
       return short
     return short.substring(8,10) + ':' + short.substring(10,12) + ':' + short.substring(12);
+  };
+
+  $scope.playNotice = function() {
+    var audio = document.createElement("audio");
+    audio.src = config.NOTICE_AUDIO;
+    audio.autoplay = "autoplay";
+    audio.addEventListener("canplay", function() {
+      audio.play();
+    });
+    audio.play();
+    // var audio = $('#notice')[0];
+    // audio.play();
   };
 
   $scope.$on('$destroy', function(event) {
