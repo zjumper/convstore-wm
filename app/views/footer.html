@@ -26,7 +26,11 @@
       <div class="modal-body">
         <div ng-show="isEmpty()">您的购物车空空如也~~</div>
         <ul class="list-group">
-          <li class="list-group-item" ng-repeat="(id, prod) in cart.products"><span class="badge">{{prod.num}}</span>
+          <li class="list-group-item" ng-repeat="(id, prod) in cart.products">
+            <a ng-click="remove(id)"><i class="fa fa-close prod-remove"></i></a>
+            <a ng-click="increase(id)"><i class="fa fa-plus-circle prod-op"></i></a>
+            <span class="badge">{{prod.num}}</span>
+            <a ng-click="decrease(id)"><i class="fa fa-minus-circle prod-op"></i></a>
             {{prod.name}}({{prod.price | currency: '￥'}})
           </li>
         </ul>

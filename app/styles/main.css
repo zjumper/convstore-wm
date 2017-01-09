@@ -21,6 +21,14 @@ body {
   background: #ffffff;
 }
 
+nav .cat-icon {
+  font-size: 14px;
+  color: #F05F40;
+  padding-left: 15px;
+  padding-top: 9px;
+  padding-right: 0px;
+}
+
 #center {
   padding-top: 45px;
   padding-bottom: 45px;
@@ -165,4 +173,25 @@ body {
 
 #order-center .cancled {
   background-color: #A0A0A0;
+}
+
+#cart-modal .prod-op {
+  float: right;
+  color: #F05F40;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1;
+  text-align: center;
+  padding: 1px 7px;
+}
+
+#cart-modal .prod-remove {
+  float: right;
+  color: #F05F40;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1;
+  text-align: center;
+  padding-top: 1px;
+  padding-left: 15px;
 }

@@ -79,6 +79,10 @@ wmApp.controller('navCtl', ['$rootScope', '$scope', 'productService', function($
       var c = cate.substring(0, 2);
       var l1 = _.find($scope.categories, function(item) { return item.code === c; });
       $scope.subcat = _.find(l1.subcat, function(item) { return item.code === cate; });
+      if(cate.substring(2) === '00') { // xx00, load all products in main category
+        productService.loadProduct(c);
+        return;
+      }
     }
     productService.loadProduct(cate);
   };
@@ -191,7 +195,7 @@ wmApp.controller('footerCtl', ['$scope', '$http', 'cartService', function($scope
   });
   $scope.$on('cart.submit', function(event, data) {
     if(data === 'success') {
-      $scope.tips('success', '您的订单已经确认，我们将尽快为您派送！');
+      $scope.tips('success', '您的订单已经确认，我们将尽快为您派送！商品价格可能会有优惠，付款时请以小票金额为准。');
       $scope.submitted = true;
     } else {
       $scope.tips('fail', '抱歉，您的订单提交发生错误，请稍后再试或电话与我们联系，85856735。');
@@ -243,6 +247,18 @@ wmApp.controller('footerCtl', ['$scope', '$http', 'cartService', function($scope
     }
     return true;
   }
+
+  $scope.remove = function(id) {
+    cartService.remove(id);
+  };
+
+  $scope.decrease = function(id) {
+    cartService.change(id, -1);
+  };
+
+  $scope.increase = function(id) {
+    cartService.change(id, 1);
+  };
 
   $scope.submitCart = function() {
     // console.log('cart submit');
@@ -334,6 +350,17 @@ wmApp.service('cartService', ['$rootScope', '$http', function($rootScope, $http)
         'amount': 0
       }
     },
+    recalculate: function() {
+      // console.log(service.cart);
+      var num = 0, amount = 0;
+      for(var p in service.cart.products) {
+        var pp = service.cart.products[p];
+        num += pp.num;
+        amount += pp.num * pp.price;
+      }
+      service.cart.total.num = num;
+      service.cart.total.amount = amount;
+    },
     add: function(id, name, price) {
       // console.log(id);
       if(service.cart.products[id]) {
@@ -350,6 +377,19 @@ wmApp.service('cartService', ['$rootScope', '$http', function($rootScope, $http)
     },
     empty: function() {
       service.cart = emptyCart;
+      $rootScope.$broadcast('cart.change');
+    },
+    remove: function(id) {
+      // service.cart.products[id] = undefined;
+      delete service.cart.products[id];
+      service.recalculate();
+      $rootScope.$broadcast('cart.change');
+    },
+    change: function(id, num) {
+      var n = service.cart.products[id].num;
+      if((n + num) < 1) return;
+      service.cart.products[id].num += num;
+      service.recalculate();
       $rootScope.$broadcast('cart.change');
     },
     submit: function(contact, flag) {

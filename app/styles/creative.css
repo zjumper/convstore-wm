@@ -454,3 +454,16 @@ footer {
 .input-group-addon {
   background-color: white;
 }
+
+.navbar {
+  min-height: 35px;
+  margin-bottom: 0px;
+  padding-top: 5px;
+}
+
+nav .dropdown-toggle {
+  padding: 5px 6px;
+  color: white;
+  background-color: #F05F40;
+  min-width: 68px;
+}

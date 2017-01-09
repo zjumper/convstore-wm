@@ -308,7 +308,7 @@ var config = {
       label: '手机配件',
       subcat: [
         {
-          code: '1300',
+          code: '1700',
           label: '全部'
         }
       ]
