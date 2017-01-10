@@ -53,6 +53,11 @@
             <input id="address" type="text" class="form-control" placeholder="请填写具体地址" ng-model="address">
             <a class="input-group-addon" ng-click="clearAddress()"><i class="glyphicon glyphicon-remove-circle"></i></a>
           </div>
+          <div class="input-group">
+            <span class="input-group-addon">订单备注：</span>
+            <textarea id="comment" class="form-control" maxlength="30" placeholder="备注" ng-model="comment"></textarea>
+            <a class="input-group-addon" ng-click="clearComment()"><i class="glyphicon glyphicon-remove-circle"></i></a>
+          </div>
         </div>
       </div>
       <div class="modal-footer">
@@ -62,4 +67,7 @@
       </div>
     </div>
   </div>
+</div>
+<div id="user-tip" class="panel panel-primary">
+  <p>本店配送范围2公里，1小时内送达。若有特殊配送要求，请在订单备注中留言。</p>
 </div>

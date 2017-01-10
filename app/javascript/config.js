@@ -1,5 +1,6 @@
 var config = {
   STOMP_HOST: '127.0.0.1',
+  // STOMP_HOST: 'm.convstore.com',
   STOMP_PORT: 61614,
   STOMP_USER: 'admin11',
   STOMP_PASSWD: 'admin',

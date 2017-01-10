@@ -7,6 +7,7 @@ var orderSchema = new mongoose.Schema({
   submittime: {type: String, required: true},
   schedule: {type: String}, // schedule time for shipping
   contact: { openid:String, mobile: String, address: String},
+  comment: {type: String},
   status: {type: Number}  //0-undeal, 1-confirmed, 2-sentout, 3-closed, -1-canceled
 });
 module.exports = mongoose.model('Order', orderSchema);

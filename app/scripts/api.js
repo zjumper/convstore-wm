@@ -72,6 +72,7 @@ module.exports = (function () {
     o.orderid = o.submittime + randomstring.generate(8);
     o.contact = order.contact;
     o.schedule = order.schedule;
+    o.comment = order.comment;
     o.contact.openid = u.openid;
     o.total = order.total;
     o.products = [];
@@ -187,30 +188,6 @@ module.exports = (function () {
 
             // save order
             saveOrder(Order, order, u, res);
-            /*
-            var o = new Order({});
-            o.submittime = dateformat(new Date(), 'yyyymmddHHMMss');
-            o.orderid = o.submittime + randomstring.generate(8);
-            o.contact = order.contact;
-            o.contact.openid = u.openid;
-            o.total = order.total;
-            o.products = [];
-            for(var i in order.products) {
-              var p = order.products[i];
-              p.pid = i;
-              o.products.push(p);
-            }
-            // logger.info(o);
-            o.save(function(err) {
-              if(err) {
-                logger.error(err);
-                res.status(500).json({status : 500});
-                return;
-              }
-              else logger.info('Order info saved.');
-              res.status(200).json({status : 200});
-            });
-            */
           });
         } else { // new user
           var newUser = new User(u);

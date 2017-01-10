@@ -147,6 +147,7 @@ wmApp.controller('footerCtl', ['$scope', '$http', 'cartService', function($scope
   $scope.schedule = '';
   $scope.mobile = '';
   $scope.address = '';
+  $scope.comment = '';
   // get user info from server
   $http.get('/api/getUserInfo').success(function(data) {
     // console.log(data);
@@ -195,7 +196,7 @@ wmApp.controller('footerCtl', ['$scope', '$http', 'cartService', function($scope
   });
   $scope.$on('cart.submit', function(event, data) {
     if(data === 'success') {
-      $scope.tips('success', '您的订单已经确认，我们将尽快为您派送！商品价格可能会有优惠，付款时请以小票金额为准。');
+      $scope.tips('success', '您的订单已经确认！货到付款。因可能存在促销降价、缺换货等情况，实际结算金额以收银小票为准。');
       $scope.submitted = true;
     } else {
       $scope.tips('fail', '抱歉，您的订单提交发生错误，请稍后再试或电话与我们联系，85856735。');
@@ -210,6 +211,10 @@ wmApp.controller('footerCtl', ['$scope', '$http', 'cartService', function($scope
   $scope.clearAddress = function() {
     // console.log('clear address');
     $scope.address = '';
+  };
+  $scope.clearComment = function() {
+    // console.log('clear comment');
+    $scope.comment = '';
   };
   $scope.tips = function(status, msg) {
     if(status === 'success') {
@@ -270,6 +275,7 @@ wmApp.controller('footerCtl', ['$scope', '$http', 'cartService', function($scope
       contact.mobile = $scope.mobile;
       contact.address = $scope.address;
       contact.schedule = $scope.schedule;
+      contact.comment = $scope.comment;
       // console.log(contact);
       if(contact.mobile == undefined || contact.mobile == ''
         || contact.address == undefined || contact.address == '') {
@@ -399,7 +405,9 @@ wmApp.service('cartService', ['$rootScope', '$http', function($rootScope, $http)
         order.total.amount += 5;
       }
       order.schedule = contact.schedule;
-      contact.schedule = undefined;
+      order.comment = contact.comment;
+      delete contact.schedule;
+      delete contact.comment;
       order.contact = contact;
       // console.log(order);
       $http({

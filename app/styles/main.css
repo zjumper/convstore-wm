@@ -200,3 +200,18 @@ nav .cat-icon {
   padding-left: 5px;
   padding-right: 5px;
 }
+
+#user-tip {
+  /*display: none;*/
+  position: absolute;
+  z-index: 9999;
+  opacity: 0.85;
+  padding: 20px 30px;
+  text-align: center;
+  top: -86px;
+}
+
+#user-tip p {
+  font-size: 16px;
+  color: #F05F40;
+}

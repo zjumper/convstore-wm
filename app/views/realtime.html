@@ -23,6 +23,7 @@
             <div class="">配送时间：{{o.schedule}}</div>
             <div class="">联系电话：{{o.contact.mobile}}</div>
             <div class="">外送地址：{{o.contact.address}}</div>
+            <div class="">订单备注：{{o.comment}}</div>
             <div class="rt-op">
               <button type="button" class="btn btn-primary" ng-show="o.status == 0" ng-click="confirm(o.orderid)">确认</button>
               <button type="button" class="btn btn-primary" ng-show="o.status < 2 && o.status > -1" ng-click="sendout(o.orderid)">送出</button>
