@@ -445,15 +445,27 @@ wmApp.controller('ordersCtl', ['$scope', '$http', 'Order', function($scope, $htt
   }).on('changeDate', function(e) {
     $scope.date = $('#datepicker').datepicker('getDate');
     var reg = $scope.date.Format('yyyyMMdd') + '.*';
-    $scope.allOrders = Order.$query({orderid: {$regex: reg}});
-    $scope.orders = $scope.allOrders;
+    // $scope.allOrders = Order.$query({orderid: {$regex: reg}});
+    // $scope.orders = $scope.allOrders;
+    // $scope.totalAmount = _.reduce($scope.orders, function(memo, o) { return memo + o.total.amount; }, 0);
     $('#datepicker').datepicker('hide');
+    Order.find({orderid: {$regex: reg}}, function(err, os) {
+      $scope.allOrders = os;
+      $scope.orders = $scope.allOrders;
+      $scope.totalAmount = _.reduce($scope.orders, function(memo, o) { return memo + o.total.amount; }, 0);
+    });
   });
   $scope.date = new Date();
   $scope.dateStr = $scope.date.Format('yyyy/MM/dd');
-  $scope.orders = Order.$query({orderid: {$regex: $scope.date.Format('yyyyMMdd') + '.*'}});
+  Order.find({orderid: {$regex: $scope.date.Format('yyyyMMdd') + '.*'}}, function(err, os) {
+    $scope.allOrders = os;
+    $scope.orders = os;
+    $scope.totalAmount = _.reduce($scope.orders, function(memo, o) { return memo + o.total.amount; }, 0);
+  });
+
   // $scope.allOrders = Order.$query({orderid: {$regex: '20161228.*'}});
-  $scope.orders = $scope.allOrders;
+  // $scope.allOrders = $scope.orders;
+  // $scope.totalAmount = _.reduce($scope.orders, function(memo, o) { return memo + o.total.amount; }, 0);
   $scope.filter = '';
   $scope.filterOrders = function() {
     if($scope.filter != '')
