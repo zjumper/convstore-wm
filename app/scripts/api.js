@@ -14,10 +14,6 @@ var config = require('./config'),
 
 module.exports = (function () {
   var logger = log4js.getLogger('normal');
-  config.client = new Stomp(config.STOMP_HOST, config.STOMP_PORT, config.STOMP_USER, config.STOMP_PASSWD);
-  config.client.connect(function(sessionId) {
-    console.log(sessionId);
-  });
 
   function initAccessToken(cb) {
     // request access_token
@@ -91,7 +87,12 @@ module.exports = (function () {
       }
       else logger.info('Order info saved.');
       // send order message to MQ
-      config.client.publish(config.STOMP_TOPIC, json.stringify(o));
+      var client = new Stomp(config.STOMP_HOST, config.STOMP_PORT, config.STOMP_USER, config.STOMP_PASSWD);
+      client.connect(function(sessionId) {
+        logger.info(sessionId);
+        client.publish(config.STOMP_TOPIC, json.stringify(o));
+        client.disconnect(function() {logger.info('disconnected.')});
+      }, function(err) {logger.error(err);});
       res.status(200).json({status : 200});
     });
   }
